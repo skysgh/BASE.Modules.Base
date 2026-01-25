@@ -1,4 +1,4 @@
-namespace App.Modules.Base
+namespace App.Modules.Base.Substrate.Contracts
 {
     /// <summary>
     /// Unique base identifier used by this Module's common contracts.

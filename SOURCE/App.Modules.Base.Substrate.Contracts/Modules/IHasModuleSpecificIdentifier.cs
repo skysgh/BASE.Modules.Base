@@ -1,6 +1,6 @@
 ﻿using App.Modules.Base.Substrate.IoC;
 
-namespace App.Modules.Base.Substrate.Models.Contracts2
+namespace App.Modules.Base.Substrate.Contracts.Modules
 {
     /// <summary>
     /// <para>

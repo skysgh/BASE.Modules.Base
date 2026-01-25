@@ -1,3 +1,5 @@
+using App.Modules.Base.Substrate.Contracts.Lifecycles;
+
 namespace App.Modules.Base.Substrate.Models.Contracts
 {
     /// <summary>
