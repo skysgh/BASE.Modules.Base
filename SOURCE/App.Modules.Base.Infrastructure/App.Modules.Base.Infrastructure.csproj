@@ -1,58 +1,51 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <TargetFramework>net8.0</TargetFramework>
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <Nullable>enable</Nullable>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <Title>$(AssemblyName)</Title>
-	  <Copyright>Copyright $(Authors)</Copyright>
-	  <PackageReadmeFile>Packaging/readme.nuget.md</PackageReadmeFile>
-	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-	  <AnalysisLevel>preview-recommended</AnalysisLevel>
-	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
-	  <Company>MachineBrains, Inc.</Company>
-	  <Product>BASE</Product>
-	  <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
+    <Copyright>Copyright $(Authors)</Copyright>
+    <PackageReadmeFile>Packaging/readme.nuget.md</PackageReadmeFile>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <AnalysisLevel>preview-recommended</AnalysisLevel>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <Company>MachineBrains, Inc.</Company>
+    <Product>BASE</Product>
+    <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
   </PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>CA1873</NoWarn>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>CA1873</NoWarn>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="IoC\Initialiser\_TOPARSE\Class1.cs" />
     <Compile Remove="_Startup\Class1.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="IoC\Initialiser\_TOPARSE\" />
     <Folder Include="NewFolder\" />
     <Folder Include="_Startup\" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="8.2.0.7535" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="9.1.0.7988" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.2" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\App.Modules.Base.Substrate.Contracts\App.Modules.Base.Substrate.Contracts.csproj" />
     <ProjectReference Include="..\App.Modules.Base.Substrate\App.Modules.Base.Substrate.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
-
 </Project>
