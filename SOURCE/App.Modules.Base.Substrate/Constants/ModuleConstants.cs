@@ -1,4 +1,4 @@
-﻿namespace App.Modules.Base.Substrate.Constants
+namespace App.Modules.Base.Substrate.Constants
 {
     /// <summary>
     /// Constants for this logical module.
@@ -14,7 +14,7 @@
         /// as a <c>Name</c> - lowercase if/as needed 
         /// at point of use.
         /// </remarks>
-        public const string Key = "Core";
+        public const string Key = "Base";
 
 
         /// <summary>
@@ -46,3 +46,4 @@
 
     }
 }
+
