@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using App.Modules.Base.Substrate.Contracts.Models.Contracts;
 
 namespace App.Modules.Base.Substrate.Models.Messages
 {
@@ -83,6 +84,21 @@ namespace App.Modules.Base.Substrate.Models.Messages
         /// </summary>
         public string WhatDoIHave { get; set; }
 
+
+
+        /// <summary>
+        /// Structured history entries for initializer execution.
+        /// </summary>
+        public List<StartupHistoryEntry> History { get; set; } = [];
+
+        public IEnumerable<StartupHistoryEntry> GetFailures() =>
+            History.Where(x => x.Status == DisplayStatus.Error);
+
+        public IEnumerable<StartupHistoryEntry> GetWarnings() =>
+            History.Where(x => x.Status == DisplayStatus.Warning);
+
+        public DateTime? GetLastStartupTime() =>
+            History.OrderByDescending(x => x.StartTimestamp).FirstOrDefault()?.StartTimestamp;
     }
 
     ///// <summary>
