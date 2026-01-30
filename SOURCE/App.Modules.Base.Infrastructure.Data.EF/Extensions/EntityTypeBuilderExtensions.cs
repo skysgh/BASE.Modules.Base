@@ -21,7 +21,7 @@ namespace App
     /// Configuration should be pure and declarative.
     /// </para>
     /// </remarks>
-    public static class HasDefaultSchemaExtensions
+    public static class EntityTypeBuilderExtensions
     {
         /// <summary>
         /// Configures an entity with standard conventions: table name, schema, and optional temporal history.

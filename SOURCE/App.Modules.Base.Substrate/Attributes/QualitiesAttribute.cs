@@ -1,4 +1,4 @@
-using App.Modules.Base.Substrate.Outcomes;
+using App.Modules.Base.Substrate.Infrastructure.Outcomes;
 
 namespace App.Modules.Base.Substrate.Attributes
 {

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using App.Modules.Base.Substrate.Contracts.Models.Contracts;
+using App.Modules.Base.Substrate.Contracts.Models.Contracts.Enums;
 
 namespace App.Modules.Base.Substrate.Models.Messages
 {

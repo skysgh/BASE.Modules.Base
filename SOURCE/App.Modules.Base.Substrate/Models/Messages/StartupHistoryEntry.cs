@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using App.Modules.Base.Substrate.Contracts.Models.Contracts;
+using App.Modules.Base.Substrate.Contracts.Models.Contracts.Enums;
 
 namespace App.Modules.Base.Substrate.Models.Messages
 {
-    public class StartupHistoryEntry : IUniversalDisplayItem
+IUniversalDisplayItem    public class StartupHistoryEntry : IUniversalDisplayItem
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -21,7 +22,7 @@ namespace App.Modules.Base.Substrate.Models.Messages
         public string InitializerTypeName { get; set; } = string.Empty;
         public bool ContinueOnFailure { get; set; }
         public Exception? Exception { get; set; }
-        public IEnumerable<DisplayAction> AvailableActions { get; set; } = Array.Empty<DisplayAction>();
+        public IEnumerable<IUniversalDisplayItemDisplayAction> AvailableActions { get; set; } = Array.Empty<DisplayAction>();
         public IDictionary<string, string> Metadata { get; set; } = new Dictionary<string, string>();
 
         public void FinalizeEntry()

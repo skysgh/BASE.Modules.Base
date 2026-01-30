@@ -1,3 +1,4 @@
+using App.Modules.Base.Substrate.Contracts.Models.Contracts.Enums;
 using App.Modules.Base.Substrate.Models.Contracts;
 using System;
 using System.Collections.Generic;
@@ -14,22 +15,7 @@ namespace App.Modules.Base.Substrate.Contracts.Models.Contracts
     {
         string Icon { get; }
         DisplayStatus Status { get; }
-        IEnumerable<DisplayAction> AvailableActions { get; }
+        IEnumerable<IUniversalDisplayItemDisplayAction> AvailableActions { get; }
         IDictionary<string, string> Metadata { get; }
-    }
-
-    public enum DisplayStatus
-    {
-        Success = 0,
-        Info = 1,
-        Warning = 2,
-        Error = 3
-    }
-
-    public class DisplayAction
-    {
-        public string Label { get; set; } = string.Empty;
-        public string ActionKey { get; set; } = string.Empty;
-        public string? Icon { get; set; }
     }
 }
