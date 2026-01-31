@@ -1,4 +1,4 @@
-using App.Modules.Base.Substrate.Contracts.Services;
+using App.Modules.Base.Infrastructure.Diagnostics;
 using Microsoft.Extensions.Logging;
 
 namespace App.Modules.Base.Infrastructure.Services.Implementations

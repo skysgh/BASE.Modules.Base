@@ -15,4 +15,8 @@
     <ProjectReference Include="..\App.Modules.Base.Infrastructure\App.Modules.Base.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="_Packaging\" />
+  </ItemGroup>
+
 </Project>

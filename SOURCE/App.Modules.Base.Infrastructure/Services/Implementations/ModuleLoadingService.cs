@@ -12,7 +12,7 @@
 // using App.Modules.Base.Infrastructure.NewFolder.Services;
 // using App.Modules.Base.Infrastructure.NewFolder.Services.Configuration;
 
-//namespace App.Modules.Base.Infrastructure.NewFolder.Services.Implementations
+//namespace App.Modules.Base.Infrastructure.Services.Implementations
 //{
 //    /// <summary>
 //    /// IMplementation of the 

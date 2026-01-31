@@ -3,7 +3,8 @@ namespace App.Base.Infrastructure.Services
     using App.Modules.Base.Infrastructure.Data.EF.Interceptors;
     using App.Modules.Base.Infrastructure.Storage.Db.EF.Interceptors;
     using App.Modules.Base.Shared.Services;
-    using App.Modules.Base.Substrate.Models.Contracts2;
+    using App.Modules.Base.Substrate.Contracts.Models.Contracts2;
+    using App.Modules.Base.Substrate.Contracts.Services;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
@@ -22,12 +23,12 @@ namespace App.Base.Infrastructure.Services
     /// <para>
     /// Implements <see cref="IHasAppBaseService"/>,
     /// which is a Module specific specialisation of
-    /// <see cref="IHasAppService"/> in order for the Dependency 
+    /// <see cref="IHasService"/> in order for the Dependency 
     /// Injection service to easily find it at startup.
     /// </para>
     /// </remarks>
-    /// <seealso cref="App.Base.Infrastructure.Services.IHasAppBaseService" />
-    public interface IDbContextPreCommitService : IHasAppBaseService, IHasInitialize
+    /// <seealso cref="IHasService" />
+    public interface IDbContextPreCommitService : IHasService, IHasInitialize
     {
         /// <summary>
         /// Pass all entities belonging to the specified DbContext

@@ -3,8 +3,8 @@
 // using System.Linq;
 // using System.Text;
 // using System.Threading.Tasks;
-using App.Modules.Base.Substrate.Constants;
 using App.Modules.Base.Substrate.Attributes;
+using App.Modules.Base.Infrastructure.Constants;
 
 namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
 {

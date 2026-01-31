@@ -31,7 +31,6 @@
     <Compile Remove="_TOREVIEW\DbContexts\Implementations\_TOREVIEW\Class1.cs" />
     <Compile Remove="_TOREVIEW\DbContexts\Implementations\_TOREVIEW\Class2.cs" />
     <Compile Remove="_TOREVIEW\DbContexts\Implementations\_TOREVIEW\ModuleDbContext.cs" />
-    <Compile Remove="_TOREVIEW\_TOPARSE\Class1.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,7 +46,6 @@
 
   <ItemGroup>
     <Folder Include="_TOREVIEW\DbContexts\Implementations\_TOREVIEW\" />
-    <Folder Include="_TOREVIEW\_TOPARSE\" />
   </ItemGroup>
 
   <ItemGroup>

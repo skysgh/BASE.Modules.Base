@@ -28,13 +28,12 @@
     <NoWarn>CA1873</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="IoC\Initialiser\_TOPARSE\Class1.cs" />
-    <Compile Remove="_Startup\Class1.cs" />
+    <Compile Remove="_Initialisation\_TOPARSE\Class1.cs" />
+    <Compile Remove="_Initialisation\Class1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="IoC\Initialiser\_TOPARSE\" />
+    <Folder Include="_Initialisation\_TOPARSE\" />
     <Folder Include="NewFolder\" />
-    <Folder Include="_Startup\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ICSharpCode.Decompiler" Version="10.0.0.8282-preview2" />
@@ -45,7 +44,7 @@
     <ProjectReference Include="..\App.Modules.Base.Substrate\App.Modules.Base.Substrate.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Packaging\readme.nuget.md">
+    <None Update="_Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
     </None>

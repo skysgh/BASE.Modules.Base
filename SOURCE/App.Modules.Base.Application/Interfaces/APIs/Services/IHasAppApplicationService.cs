@@ -1,4 +1,5 @@
-using App.Modules.Base.Substrate.Services;
+using App.Modules.Base.Substrate.Contracts.Services;
+
 // using System;
 // using System.Collections.Generic;
 // using System.Linq;
@@ -10,7 +11,7 @@ namespace App.Modules.Base.Application.Interfaces.APIs.Services
     /// <summary>
     /// Contract for Applicaiton Services
     /// </summary>
-    public interface IHasAppApplicationService : IHasAppService
+    public interface IHasAppApplicationService : IHasService
     {
     }
 }

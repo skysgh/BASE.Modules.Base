@@ -1,12 +1,12 @@
+using App.Modules.Base.Infrastructure.Constants;
 using App.Modules.Base.Substrate.Attributes;
-using App.Modules.Base.Substrate.Constants;
 
 namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
 {
     /// <summary>
     /// Configuration Settings for configuring the GeoIPService
     /// </summary>
-    public class GeoIPServiceConfigurationSettings
+    public class GeoIPServiceConfigurationSettings : IServiceConfiguration
     {
         /// <summary>
         /// The Service Credentials key

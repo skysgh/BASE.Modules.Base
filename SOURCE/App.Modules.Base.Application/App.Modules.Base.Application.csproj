@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Initialisation\_TOREVIEW\AutoMapperAppConfigurer.cs" />
+    <Compile Remove="_Initialisation\_TOREVIEW\AutoMapperAppConfigurer.cs" />
     <Compile Remove="Interfaces\APIs\Services\Implementations\_TOREVIEW\DiagnosticsManagementService.cs" />
   </ItemGroup>
 
@@ -41,15 +41,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Initialisation\_TOREVIEW\" />
+    <Folder Include="_Initialisation\_TOREVIEW\" />
     <Folder Include="Interfaces\APIs\ObjectMapping\" />
-    <Folder Include="Initialisation\IoC\" />
+    <Folder Include="_Initialisation\IoC\" />
     <Folder Include="Interfaces\APIs\Services\Implementations\_TOREVIEW\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Packaging\readme.nuget.md">
+    <None Update="_Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
     </None>

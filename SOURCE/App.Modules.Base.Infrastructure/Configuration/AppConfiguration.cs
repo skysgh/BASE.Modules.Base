@@ -1,8 +1,8 @@
 using App.Modules.Base.Substrate.Attributes;
 // using System.Xml.Linq;
-using App.Modules.Base.Substrate.Models.Contracts;
-using App.Modules.Base.Substrate.Constants;
 using App.Modules.Base.Substrate.Models.Configuration;
+using App.Modules.Base.Infrastructure.Constants;
+using App.Modules.Base.Substrate.Contracts.Models;
 
 namespace App.Base.Infrastructure.Configuration
 {

@@ -1,8 +1,8 @@
+using App.Modules.Base.Infrastructure.Constants;
 using App.Modules.Base.Infrastructure.Data.EF.Schema.Definitions.Conventions;
 using App.Modules.Base.Infrastructure.Data.EF.Schema.Management;
 using App.Modules.Base.Infrastructure.Storage.Db.EF.Schema.Definitions.Conventions;
 using App.Modules.Base.Infrastructure.Storage.Db.EF.Schema.Management;
-using App.Modules.Base.Substrate.Constants;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations

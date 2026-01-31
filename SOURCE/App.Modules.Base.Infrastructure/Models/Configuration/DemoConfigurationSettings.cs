@@ -1,5 +1,5 @@
+using App.Modules.Base.Infrastructure.Constants;
 using App.Modules.Base.Substrate.Attributes;
-using App.Modules.Base.Substrate.Constants;
 
 namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
 {

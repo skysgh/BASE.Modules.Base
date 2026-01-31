@@ -17,6 +17,7 @@
 	  <Product>BASE</Product>
 	  <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
 	  <PackageReadmeFile>Packaging/readme.nuget.md</PackageReadmeFile>
+	  <RootNamespace>App.Modules.Base</RootNamespace>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,6 +31,9 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<Folder Include="Infrastructure\Caching\" />
+		<Folder Include="Infrastructure\Initialisation\" />
+		<Folder Include="Substrate\Contracts\Shared\Contracts\" />
 		<Folder Include="tmp\" />
 	</ItemGroup>
 
@@ -38,7 +42,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Packaging\readme.nuget.md" Pack="true" PackagePath="\" />
+	  <None Update="_Packaging\readme.nuget.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	
 </Project>

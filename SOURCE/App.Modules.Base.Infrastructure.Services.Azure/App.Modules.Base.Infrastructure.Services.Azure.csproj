@@ -46,10 +46,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Modules.Base.Infrastructure\App.Modules.Base.Infrastructure.csproj" />
+    <ProjectReference Include="..\App.Modules.Base.Substrate.Contracts\App.Modules.Base.Substrate.Contracts.csproj" />
+    <ProjectReference Include="..\App.Modules.Base.Substrate\App.Modules.Base.Substrate.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Packaging\readme.nuget.md">
+    <None Update="_Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
     </None>

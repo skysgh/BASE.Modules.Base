@@ -1,4 +1,5 @@
 using App.Base.Infrastructure.Configuration;
+using App.Modules.Base.Infrastructure.Services;
 using App.Modules.Base.Substrate.Models.Messages;
 using Microsoft.Extensions.Logging;
 // using System;

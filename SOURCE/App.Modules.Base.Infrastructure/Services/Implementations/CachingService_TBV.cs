@@ -8,7 +8,7 @@
 //    ///     <see cref="ICacheItemService" />
 //    ///     Infrastructure Service Contract
 //    /// </summary>
-//    public class MemoryCachingService : AppCoreServiceBase, IMemoryCachingService
+//    public class MemoryCachingService : IMemoryCachingService
 //    {
 //        private readonly IUniversalDateTimeService _dateTimeService;
 

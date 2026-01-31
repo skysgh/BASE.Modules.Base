@@ -1,7 +1,7 @@
 // using System;
+using App.Modules.Base.Infrastructure.Constants;
 using App.Modules.Base.Substrate.Attributes;
-using App.Modules.Base.Substrate.Constants;
-using App.Modules.Base.Substrate.Models.Contracts;
+using App.Modules.Base.Substrate.Contracts.Models;
 
 namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
 {

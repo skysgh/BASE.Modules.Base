@@ -1,10 +1,12 @@
 // using System;
 // using System.Collections.Generic;
 using System.Globalization;
+using App.Modules.Base.Substrate.Contracts.Models;
+
+
 // using System.Linq;
 // using System.Text;
 // using System.Threading.Tasks;
-using App.Modules.Base.Substrate.Models.Contracts;
 using Microsoft.Extensions.Logging;
 
 namespace App.Modules.Base.Infrastructure.Models.Entities
@@ -12,9 +14,9 @@ namespace App.Modules.Base.Infrastructure.Models.Entities
     /// <summary>
     /// Encapsulation of a diagnostics log message.
     /// </summary>
-    /// <seealso cref="App.Modules.Base.Substrate.Models.Contracts.IHasTitle" />
-    /// <seealso cref="App.Modules.Base.Substrate.Models.Contracts.IHasLogLevel" />
-    /// <seealso cref="App.Modules.Base.Substrate.Models.Contracts.IHasException" />
+    /// <seealso cref="Substrate.Contracts.Models.IHasTitle" />
+    /// <seealso cref="Substrate.Contracts.Models.IHasLogLevel" />
+    /// <seealso cref="Substrate.Contracts.Models.IHasException" />
     public class DiagnosticsLogEntry : IHasTitle, IHasLogLevel, IHasException
     {
 

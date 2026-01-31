@@ -2,6 +2,7 @@
 // using System.Security.Claims;
 // using App.Modules.Base.Substrate.Services;
 
+using App.Modules.Base.Infrastructure.Services;
 using System.Security.Claims;
 
 namespace App.Modules.Base.Infrastructure.NewFolder.Services

@@ -1,6 +1,7 @@
 using App.Modules.Base.Infrastructure.Data.EF.Constants;
+using App.Modules.Base.Substrate.Contracts.Models;
+using App.Modules.Base.Substrate.Contracts.Models.StorageMetadata;
 using App.Modules.Base.Substrate.Models;
-using App.Modules.Base.Substrate.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;

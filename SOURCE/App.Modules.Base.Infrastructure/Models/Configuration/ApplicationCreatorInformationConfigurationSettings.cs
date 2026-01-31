@@ -1,7 +1,7 @@
 // using System;
+using App.Modules.Base.Infrastructure.Constants;
 using App.Modules.Base.Substrate.Attributes;
-using App.Modules.Base.Substrate.Constants;
-using App.Modules.Base.Substrate.Models.Contracts;
+using App.Modules.Base.Substrate.Contracts.Models;
 
 namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
 {
@@ -14,8 +14,8 @@ namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
     /// retrieved from the Host Settings.
     /// </para>
     /// </summary>
-    /// <seealso cref="Contracts.IHasName" />
-    /// <seealso cref="Contracts.IHasDescription" />
+    /// <seealso cref="Contracts.Models.IHasName" />
+    /// <seealso cref="Contracts.Models.IHasDescription" />
     public class ApplicationCreatorInformationConfigurationSettings : IHostSettingsBasedConfigurationObject, IHasName, IHasDescription
     {
         /// <summary>

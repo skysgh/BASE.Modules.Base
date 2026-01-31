@@ -1,4 +1,5 @@
 // using App.Modules.Base.Infrastructure.NewFolder.Services;
+using App.Modules.Base.Infrastructure.Services;
 using Microsoft.Extensions.Logging;
 // using System;
 // using System.Collections.Generic;
@@ -7,7 +8,7 @@ using Microsoft.Extensions.Logging;
 // using System.Text;
 // using System.Threading.Tasks;
 
-namespace App.Modules.Base.Infrastructure.NewFolder.Services.Implementations
+namespace App.Modules.Base.Infrastructure.Services.Implementations
 {
     /// <summary>
     /// Implementation of 

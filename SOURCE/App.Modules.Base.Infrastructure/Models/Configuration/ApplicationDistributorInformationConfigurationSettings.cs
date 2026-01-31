@@ -1,7 +1,7 @@
 // using System;
+using App.Modules.Base.Infrastructure.Constants;
 using App.Modules.Base.Substrate.Attributes;
-using App.Modules.Base.Substrate.Constants;
-using App.Modules.Base.Substrate.Models.Contracts;
+using App.Modules.Base.Substrate.Contracts.Models;
 
 namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
 {
@@ -10,8 +10,8 @@ namespace App.Modules.Base.Substrate.Models.ConfigurationSettings
     /// describing the Distributor of the application
     /// (distinct from the Creator) in many commercial cases.
     /// </summary>
-    /// <seealso cref="Contracts.IHasName" />
-    /// <seealso cref="Contracts.IHasDescription" />
+    /// <seealso cref="Contracts.Models.IHasName" />
+    /// <seealso cref="Contracts.Models.IHasDescription" />
     public class ApplicationDistributorInformationConfigurationSettings : IHostSettingsBasedConfigurationObject, IHasName, IHasDescription
     {
         /// <summary>

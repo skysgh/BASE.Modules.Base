@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Packaging\readme.nuget.md">
+    <None Update="_Packaging\readme.nuget.md">
       <PackagePath>\</PackagePath>
       <Pack>true</Pack>
     </None>

@@ -2,16 +2,16 @@ namespace App.Base.Infrastructure.Services.Implementations
 {
     using System.Collections.Generic;
     using System.Threading;
-    using App.Modules.Base.Infrastructure.NewFolder.Services;
     using App.Modules.Base.Infrastructure.NewFolder.Services.Base;
-    using App.Modules.Base.Substrate.Models.Contracts.Enums;
+    using App.Modules.Base.Infrastructure.Services;
+    using App.Modules.Base.Substrate.Contracts.Models.Enums;
 
     /// <summary>
     ///     Implementation of the
     ///     <see cref="IDiagnosticsTracingService" />
     ///     Infrastructure Service Contract
     /// </summary>
-    public class DiagnosticsTracingService : AppCoreServiceBase, IDiagnosticsTracingService
+    public class DiagnosticsTracingService : IDiagnosticsTracingService
     {
         private static readonly Queue<TraceEntry> _cache = new Queue<TraceEntry>();
         private static TraceLevel _flushLevel;

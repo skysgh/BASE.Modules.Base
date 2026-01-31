@@ -2,10 +2,10 @@ using App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations.Base;
 using App.Modules.Base.Infrastructure.Data.EF.Schema.Management;
 using App.Modules.Base.Infrastructure.Data.EF.Schema.Implementations;
 using App.Modules.Base.Shared.Constants;
-using App.Modules.Base.Substrate.Constants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Logging;
+using App.Modules.Base.Infrastructure.Constants;
 
 
 namespace App.Modules.Base.Infrastructure.Data.EF.DbContexts.Implementations
