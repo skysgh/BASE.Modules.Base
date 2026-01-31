@@ -11,13 +11,16 @@ namespace App.Modules.Base.Domain.Initialisation
     /// Assembly specific implementation of
     /// <see cref="IModuleAssemblyInitialiser"/>
     /// </summary>
-    public class DomainModuleAssemblyInitialiser : ModuleAssemblyIntialiserBase
+    public class ModuleAssemblyInitialiser : IModuleAssemblyInitialiser
     {
         /// <inheritdoc/>
-        public DomainModuleAssemblyInitialiser() : base()
+        public void DoAfterBuild()
         {
-            this.Initialisers.Push(
-                new ModuleAssemblyInitialiser());
+        }
+
+        ///<inheritdoc/>
+        public void DoBeforeBuild()
+        {
         }
     }
 }

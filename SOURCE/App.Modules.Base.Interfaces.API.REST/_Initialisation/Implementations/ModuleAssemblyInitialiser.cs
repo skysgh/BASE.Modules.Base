@@ -1,10 +1,24 @@
-﻿using System;
+﻿using App.Modules.Base.Initialisation;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace App.Modules.Base.Interfaces.API.REST._Initialisation.Implementations
+namespace App.Modules.Base.Interfaces.API.REST.Initialisation.Implementations
 {
-    internal class ModuleAssemblyInitialiser
+    /// <summary>
+    /// Assembly specific implementation of
+    /// <see cref="IModuleAssemblyInitialiser"/>
+    /// </summary>
+    public class ModuleAssemblyInitialiser : IModuleAssemblyInitialiser
     {
+        /// <inheritdoc/>
+        public void DoAfterBuild()
+        {
+        }
+
+        ///<inheritdoc/>
+        public void DoBeforeBuild()
+        {
+        }
     }
 }

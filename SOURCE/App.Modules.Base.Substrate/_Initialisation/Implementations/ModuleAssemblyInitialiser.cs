@@ -13,10 +13,12 @@ namespace App.Modules.Base.Initialisation.Implementations
     /// </summary>
     public class ModuleAssemblyInitialiser : IModuleAssemblyInitialiser
     {
+        /// <inheritdoc/>
         public void DoAfterBuild()
         {
         }
 
+        ///<inheritdoc/>
         public void DoBeforeBuild()
         {
         }

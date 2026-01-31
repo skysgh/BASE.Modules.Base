@@ -11,13 +11,17 @@ namespace App.Modules.Base.Infrastructure.Initialisation.Implementations
     /// Assembly specific implementation of
     /// <see cref="IModuleAssemblyInitialiser"/>
     /// </summary>
-    public class InfrastructureModuleAssemblyInitialiser : ModuleAssemblyIntialiserBase
+    public class ModuleAssemblyInitialiser : IModuleAssemblyInitialiser
     {
         /// <inheritdoc/>
-        public InfrastructureModuleAssemblyInitialiser() : base()
+        public void DoAfterBuild()
         {
-            this.Initialisers.Push(
-                new ModuleAssemblyInitialiser());
+        }
+
+        ///<inheritdoc/>
+        public void DoBeforeBuild()
+        {
         }
     }
+
 }

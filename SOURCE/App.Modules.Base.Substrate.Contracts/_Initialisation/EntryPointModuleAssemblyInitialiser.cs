@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +19,7 @@ namespace App.Modules.Base.Substrate.Contracts.Initialisation
         /// <param name="entryPointAssembly">Entry assembly (App.Host)</param>
         /// <param name="configuration">Configuration object (passed as object to minimize dependencies)</param>
         /// <param name="log">Startup log</param>
-        public ModuleConfigurationBag Initialize(
+        public ModuleAssemblyInitialiserBag Initialize(
             Assembly entryPointAssembly,
             object configuration,
             StartupLog log)
@@ -40,7 +40,7 @@ namespace App.Modules.Base.Substrate.Contracts.Initialisation
             
             // STEP 3: Process each assembly using extension methods
             log.Log(LogLevel.Information, "=== PROCESSING ASSEMBLIES ===");
-            var bag = new ModuleConfigurationBag { ModuleName = "Application" };
+            var bag = new ModuleAssemblyInitialiserBag { ModuleName = "Application" };
             
             foreach (var assembly in sortedAssemblies)
             {
@@ -64,7 +64,7 @@ namespace App.Modules.Base.Substrate.Contracts.Initialisation
         /// </summary>
         private void ProcessAssembly(
             Assembly assembly,
-            ModuleConfigurationBag bag,
+            ModuleAssemblyInitialiserBag bag,
             StartupLog log)
         {
             var assemblyName = assembly.GetName().Name;
@@ -90,14 +90,14 @@ namespace App.Modules.Base.Substrate.Contracts.Initialisation
             if (services.Any() || mappers.Any() || schemas.Any() || configurers.Any())
             {
                 log.Log(LogLevel.Information, 
-                    $"  ? Services: {services.Count}, " +
+                    $"  → Services: {services.Count}, " +
                     $"Mappers: {mappers.Count}, " +
                     $"Schemas: {schemas.Count}, " +
                     $"Configurers: {configurers.Count}");
             }
             else
             {
-                log.Log(LogLevel.Debug, $"  ? (empty assembly)");
+                log.Log(LogLevel.Debug, $"  → (empty assembly)");
             }
         }
     }

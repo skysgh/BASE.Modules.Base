@@ -8,7 +8,7 @@ using App.Modules.Base.Substrate.Contracts.Models.Enums;
 
 namespace App.Modules.Base.Substrate.Models.Messages
 {
-IUniversalDisplayItem    public class StartupHistoryEntry : IUniversalDisplayItem
+        public class StartupLogEntry : IUniversalDisplayItem
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
