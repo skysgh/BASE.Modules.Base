@@ -18,6 +18,11 @@ namespace App
     public static class AssemblySchemaDiscoveryExtensions
     {
         /// <summary>
+        /// Convention: Only Infrastructure.Data layer assemblies contain EF schema configurations.
+        /// </summary>
+        private const string DataLayerConvention = "Infrastructure.Data";
+
+        /// <summary>
         /// Discovers EF Core IEntityTypeConfiguration implementation TYPES.
         /// Returns Type objects (not Actions) to avoid EF dependency in Contracts.
         /// The actual ModelBuilder configuration happens later in Infrastructure.Data.EF layer.
@@ -30,7 +35,7 @@ namespace App
             var assemblyName = assembly.GetName().Name;
 
             // Only scan Infrastructure.Data layers by convention
-            if (assemblyName?.Contains("Infrastructure.Data", StringComparison.OrdinalIgnoreCase) != true)
+            if (assemblyName?.Contains(DataLayerConvention, StringComparison.OrdinalIgnoreCase) != true)
             {
                 return results;
             }

@@ -1,9 +1,9 @@
+using System;
+using App.Base.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+
 namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors
 {
-    using System;
-    using App.Base.Infrastructure.Services;
-    using Microsoft.EntityFrameworkCore;
-
     /// <summary>
     /// Contract for implementations of 
     /// Pre-Commit operations. Generally used 

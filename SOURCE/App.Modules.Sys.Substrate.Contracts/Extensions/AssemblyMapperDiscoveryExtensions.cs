@@ -15,6 +15,11 @@ namespace App
     public static class AssemblyMapperDiscoveryExtensions
     {
         /// <summary>
+        /// Convention: Only Application layer assemblies contain AutoMapper profiles.
+        /// </summary>
+        private const string ApplicationLayerConvention = "Application";
+
+        /// <summary>
         /// Discovers AutoMapper Profile classes in assembly.
         /// Only scans Application-layer assemblies by convention.
         /// </summary>
@@ -26,8 +31,10 @@ namespace App
             var assemblyName = assembly.GetName().Name;
             
             // Only scan Application layers by convention
-            if (assemblyName?.Contains("Application", StringComparison.OrdinalIgnoreCase) != true)
+            if (assemblyName?.Contains(ApplicationLayerConvention, StringComparison.OrdinalIgnoreCase) != true)
+            {
                 return results;
+            }
             
             try
             {

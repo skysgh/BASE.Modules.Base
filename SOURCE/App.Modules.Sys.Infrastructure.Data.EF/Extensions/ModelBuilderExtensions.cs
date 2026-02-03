@@ -426,11 +426,13 @@ where TEntity : class, IHasKey
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="modelBuilder"></param>
         /// <param name="order"></param>
-        /// <param name="injectedPropertyDefs"></param>
+        /// <param name="injectedPropertyDefs">Reserved for future extensibility</param>
         public static void DefineRequiredEnabled<TEntity>(
             this ModelBuilder modelBuilder,
             ref int order,
+#pragma warning disable IDE0060 // Remove unused parameter - Reserved for future property injection scenarios
             Func<int, int>? injectedPropertyDefs = null)
+#pragma warning restore IDE0060
             where TEntity : class, IHasEnabled
         {
             modelBuilder.Entity<TEntity>()

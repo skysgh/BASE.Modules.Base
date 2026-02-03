@@ -19,12 +19,14 @@ namespace App.Modules.Sys.Initialisation.Implementation
         /// ONE METHOD - discovers and initializes everything recursively.
         /// </summary>
         /// <param name="entryPointAssembly">Entry assembly (App.Host)</param>
-        /// <param name="configuration">Configuration object (passed as object to minimize dependencies)</param>
+        /// <param name="configuration">Configuration object (reserved for future use)</param>
         /// <param name="log">Startup log</param>
         /// <param name="services"></param>
         public static ModuleConfigurationBag Initialize(
             Assembly entryPointAssembly,
+#pragma warning disable IDE0060 // Remove unused parameter - Reserved for future configuration scenarios
             object configuration,
+#pragma warning restore IDE0060
             StartupLog log,
             IServiceCollection services)
         {
@@ -128,7 +130,7 @@ namespace App.Modules.Sys.Initialisation.Implementation
             if (services.Count > 0 || mappers.Count > 0 || schemas.Count > 0 || configurers.Count > 0 || cacheObjects.Count > 0)
             {
                 log.Log(TraceLevel.Info, 
-                    $"  ? Services: {services.Count}, " +
+                    $"  ✓ Services: {services.Count}, " +
                     $"Mappers: {mappers.Count}, " +
                     $"Schemas: {schemas.Count}, " +
                     $"Configurers: {configurers.Count}, " +
@@ -136,7 +138,7 @@ namespace App.Modules.Sys.Initialisation.Implementation
             }
             else
             {
-                log.Log(TraceLevel.Debug, $"  ? (empty assembly)");
+                log.Log(TraceLevel.Debug, $"  ∅ (empty assembly)");
             }
         }
     }
