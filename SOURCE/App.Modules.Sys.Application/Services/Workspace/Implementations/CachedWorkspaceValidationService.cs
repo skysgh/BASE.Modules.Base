@@ -19,14 +19,14 @@ namespace App.Modules.Sys.Application.Services.Workspace.Implementations
         private readonly IAppLogger _logger;
         private const string CACHE_KEY = "Workspace.Ids";
 
-/// <summary>
-/// Constructor
-/// </summary>
-/// <param name="cacheRegistry"></param>
-/// <param name="logger"></param>
+        /// <summary>
+        /// Initializes a new instance of the CachedWorkspaceValidationService class.
+        /// </summary>
+        /// <param name="cacheRegistry">The cache object registry service.</param>
+        /// <param name="logger">The application logger.</param>
         public CachedWorkspaceValidationService(
             ICacheObjectRegistryService cacheRegistry,
-            IAppLogger logger)
+            IAppLogger<CachedWorkspaceValidationService> logger)
         {
             _cacheRegistry = cacheRegistry;
             _logger = logger;
