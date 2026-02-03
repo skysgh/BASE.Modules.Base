@@ -143,11 +143,15 @@ namespace App.Modules.Sys.Shared.ObjectMaps
         private static string GetPropertyName<T>(Expression<T> expression)
         {
             if (expression.Body is MemberExpression member)
+            {
                 return member.Member.Name;
+            }
             
             if (expression.Body is UnaryExpression unary && 
                 unary.Operand is MemberExpression unaryMember)
+            {
                 return unaryMember.Member.Name;
+            }
 
             throw new ArgumentException("Expression must be a property access", nameof(expression));
         }

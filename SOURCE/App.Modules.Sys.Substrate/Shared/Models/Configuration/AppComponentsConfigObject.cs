@@ -247,7 +247,7 @@ namespace App.Modules.Sys.Shared.Models.Configuration
         public Directories Directories { get => _directories; } 
 
 
-        private Directories _directories= new Directories();
+        private readonly Directories _directories = new Directories();
     }
 
     /// <summary>

@@ -27,9 +27,15 @@ namespace App.Modules.Sys.Shared.Models.Implementations
         {
             get
             {
-                if (StartUtc == null) return TimeSpan.Zero;
-                if (EndUtc == null) return TimeSpan.Zero;
-                return this.StartUtc.Value - EndUtc.Value;
+                if (StartUtc == null)
+                {
+                    return TimeSpan.Zero;
+                }
+                if (EndUtc == null)
+                {
+                    return TimeSpan.Zero;
+                }
+                return StartUtc.Value - EndUtc.Value;
             }
         }
 
@@ -43,17 +49,17 @@ namespace App.Modules.Sys.Shared.Models.Implementations
         /// </summary>
         public void Start(string title, string? description=null)
         {
-            this.Title = title;
-            this.Description = description??string.Empty;
+            Title = title;
+            Description = description ?? string.Empty;
 
-            this.StartUtc = DateTime.UtcNow;
+            StartUtc = DateTime.UtcNow;
         }
         /// <summary>
         /// Finalize the entry.
         /// </summary>
         public void FinalizeEntry()
         {
-            this.EndUtc = DateTime.UtcNow;
+            EndUtc = DateTime.UtcNow;
 
             Metadata["Duration"] = $"{Duration.TotalMilliseconds:F0}ms";
             if (Exception != null)

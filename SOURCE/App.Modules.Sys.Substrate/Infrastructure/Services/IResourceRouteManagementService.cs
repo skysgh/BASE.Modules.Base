@@ -19,6 +19,6 @@ namespace App.Modules.Sys.Infrastructure.Services
         /// </summary>
         /// <param name="resourceRoute"></param>
         /// <returns></returns>
-        public string? Rewrite(string? resourceRoute);
+        string? Rewrite(string? resourceRoute);
     }
 }

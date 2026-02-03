@@ -1,15 +1,15 @@
 // Extensions are always put in root namespace
 // for maximum usability from elsewhere:
 
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App
 #pragma warning restore IDE0130 // Namespace does not match folder structure
 {
-    using System;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using Microsoft.EntityFrameworkCore;
-
     /// <summary>
     /// <para>
     /// Class to allow for use of EF's Include statement

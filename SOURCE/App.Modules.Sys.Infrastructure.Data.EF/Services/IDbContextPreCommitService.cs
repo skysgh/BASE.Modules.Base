@@ -1,11 +1,11 @@
+using App.Modules.Sys.Infrastructure.Data.EF.Interceptors;
+using Microsoft.EntityFrameworkCore;
+using App.Modules.Sys.Shared.Models;
+using App.Modules.Sys.Shared.Services;
+using App.Modules.Sys.Infrastructure.Services;
+
 namespace App.Base.Infrastructure.Services
 {
-    using App.Modules.Sys.Infrastructure.Data.EF.Interceptors;
-    using Microsoft.EntityFrameworkCore;
-    using App.Modules.Sys.Shared.Models;
-    using App.Modules.Sys.Shared.Services;
-    using App.Modules.Sys.Infrastructure.Services;
-
     /// <summary>
     /// Contract for an Infrastructure Service to 
     /// pre-process all new/updated/modified entities

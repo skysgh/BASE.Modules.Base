@@ -33,7 +33,10 @@ namespace App
                 foreach (var implType in types)
                 {
                     var lifetime = implType.DetermineServiceLifetime();
-                    if (!lifetime.HasValue) continue;
+                    if (!lifetime.HasValue)
+                    {
+                        continue;
+                    }
                     
                     // Get all interfaces except lifecycle markers
                     var interfaces = implType.GetInterfaces()
@@ -77,7 +80,7 @@ namespace App
                         {
                             Interface = serviceType,
                             Implementation = implementationType,
-                            Description = $"{lifetime.Value}: {serviceType.Name} ? {implementationType.Name}"
+                            Description = $"{lifetime.Value}: {serviceType.Name} → {implementationType.Name}"
                         });
                     }
                     
@@ -106,11 +109,17 @@ namespace App
         public static ServiceLifetime? DetermineServiceLifetime(this Type type)
         {
             if (typeof(IHasSingletonLifecycle).IsAssignableFrom(type))
+            {
                 return ServiceLifetime.Singleton;
+            }
             if (typeof(IHasScopedLifecycle).IsAssignableFrom(type))
+            {
                 return ServiceLifetime.Scoped;
+            }
             if (typeof(IHasTransientLifecycle).IsAssignableFrom(type))
+            {
                 return ServiceLifetime.Transient;
+            }
             
             return null; // Not a service
         }

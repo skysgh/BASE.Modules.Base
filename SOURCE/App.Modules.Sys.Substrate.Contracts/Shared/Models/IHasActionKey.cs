@@ -8,7 +8,7 @@ namespace App.Modules.Sys.Shared.Models
         /// <summary>
         /// 
         /// </summary>
-        public string ActionKey { get; set; }
+        string ActionKey { get; set; }
 
     }
 }

@@ -45,7 +45,9 @@ namespace App.Modules.Sys.Application.Services.Authorization.Implementations
             var permission = await _repository.GetByKeyAsync(key, ct);
             
             if (permission == null)
+            {
                 return null;
+            }
 
             return new SystemPermissionDto
             {

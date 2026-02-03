@@ -1,8 +1,9 @@
+using App.Modules.Sys.Infrastructure.Azure.Models.Implementations.Base;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace App.Modules.Sys.Infrastructure.Azure.Services
 {
-    using App.Modules.Sys.Infrastructure.Azure.Models.Implementations.Base;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
 
 
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,6 +15,6 @@ namespace App.Modules.Sys.Infrastructure.Identifiers
         /// Generates a unique identifier.
         /// </summary>
         /// <returns></returns>
-        public Guid Generate();
+        Guid Generate();
     }
 }

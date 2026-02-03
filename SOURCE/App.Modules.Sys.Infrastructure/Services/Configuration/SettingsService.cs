@@ -71,7 +71,9 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             }
 
             if (setting == null || string.IsNullOrEmpty(setting.SerializedTypeValue))
+            {
                 return defaultValue;
+            }
 
             return JsonSerializer.Deserialize<T>(setting.SerializedTypeValue);
         }
@@ -84,7 +86,9 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             _inMemoryDefaults ??= await _defaultsLoader.LoadDefaultsAsync(ct);
 
             if (!_inMemoryDefaults.TryGetValue(key, out var definition))
+            {
                 return defaultValue;
+            }
 
             try
             {
@@ -183,10 +187,14 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
                 currentPath = string.IsNullOrEmpty(currentPath) ? part : $"{currentPath}/{part}";
 
                 if (await _repository.IsLockedAsync(currentPath, "*", "*", ct))
+                {
                     return true;
+                }
 
                 if (workspaceId.HasValue && await _repository.IsLockedAsync(currentPath, workspaceId.Value.ToString(), "*", ct))
+                {
                     return true;
+                }
             }
 
             return false;

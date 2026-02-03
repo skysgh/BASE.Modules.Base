@@ -118,7 +118,9 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
         {
             var demoUsers = await LoadSeedDataAsync<DemoUsersSeed>("DemoUsers", ct);
             if (demoUsers?.Users == null)
+            {
                 return;
+            }
 
             foreach (var userDto in demoUsers.Users)
             {
@@ -127,7 +129,9 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
                     .FirstOrDefaultAsync(i => i.Provider == "Local" && i.Email == userDto.Email, ct);
 
                 if (existingIdentity != null)
+                {
                     continue;  // User already exists
+                }
 
                 // Create new user
                 var user = new User
@@ -188,7 +192,9 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
                 "DemoPermissionAssignments", ct);
 
             if (assignments?.Assignments == null)
+            {
                 return;
+            }
 
             foreach (var assignmentDto in assignments.Assignments)
             {
@@ -198,14 +204,18 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Seeding
                     .FirstOrDefaultAsync(i => i.Provider == "Local" && i.Email == assignmentDto.UserEmail, ct);
 
                 if (identity?.User == null)
+                {
                     continue;
+                }
 
                 // Find permission by key
                 var permission = await _context.SystemPermissions
                     .FirstOrDefaultAsync(p => p.Key == assignmentDto.PermissionKey, ct);
 
                 if (permission == null)
+                {
                     continue;
+                }
 
                 // Idempotent - only add if doesn't exist
                 var exists = await _context.UserSystemPermissions

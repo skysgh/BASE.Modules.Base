@@ -56,7 +56,9 @@ namespace App.Modules.Sys.Interfaces.API.REST.Controllers.V1
             var permission = await _permissionService.GetPermissionByKeyAsync(key, ct);
 
             if (permission == null)
+            {
                 return NotFound();
+            }
 
             return Ok(permission);
         }

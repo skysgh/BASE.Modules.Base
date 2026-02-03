@@ -54,7 +54,9 @@ namespace App.Modules.Sys.Application.Services.Session.Implementations
             var session = await _repository.GetByIdAsync(id, ct);
             
             if (session == null)
+            {
                 return null;
+            }
 
             return new SessionDto
             {

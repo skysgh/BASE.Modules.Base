@@ -1,14 +1,15 @@
+using System.Diagnostics;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using App.Modules.Sys.Infrastructure.Data.EF.Schema.Management;
+using App.Modules.Sys.Infrastructure.Data.EF.Schema.Implementations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using App.Base.Infrastructure.Services;
+
 namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations.Base
 {
-    using System.Diagnostics;
-    using System.Reflection;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using App.Modules.Sys.Infrastructure.Data.EF.Schema.Management;
-    using App.Modules.Sys.Infrastructure.Data.EF.Schema.Implementations;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
-    using App.Base.Infrastructure.Services;
 
     /// <summary>
     /// This is the base class that 
@@ -140,7 +141,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations.Base
         /// </remarks>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            InternalModelCreating(modelBuilder, this.SchemaKey);
+            InternalModelCreating(modelBuilder, SchemaKey);
         }
 
 
@@ -158,10 +159,10 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations.Base
         {
             if (schemaKey == null)
             {
-                schemaKey = this.SchemaKey;
+                schemaKey = SchemaKey;
             }
 
-            Assembly assembly = this.GetType().Assembly;
+            Assembly assembly = GetType().Assembly;
 
             // Set the schema name first
             // so that all the following models don't
@@ -175,7 +176,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations.Base
             // a full schema by reflection...
             // Then invoke it, passing it the model builder that
             // needs filling in.
-            this.ModelBuilderOrchestrator.Initialize(modelBuilder, assembly);
+            ModelBuilderOrchestrator.Initialize(modelBuilder, assembly);
 
 
             //Call base in case it ever does something.

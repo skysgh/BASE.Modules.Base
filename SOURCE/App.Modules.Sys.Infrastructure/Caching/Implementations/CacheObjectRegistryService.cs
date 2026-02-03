@@ -214,7 +214,9 @@ namespace App.Modules.Sys.Infrastructure.Caching.Implementations
         public void Dispose()
         {
             if (_disposed)
+            {
                 return;
+            }
 
             foreach (var cacheObject in _cacheObjects.Values)
             {
