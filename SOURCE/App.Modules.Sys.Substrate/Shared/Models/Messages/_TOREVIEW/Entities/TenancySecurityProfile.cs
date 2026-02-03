@@ -41,10 +41,8 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities
             get => _accountGroups ??= [];
             set => _accountGroups = value;
         }
-        /// <summary>
-        /// TODO: Is Public required?
-        /// </summary>
-        public ICollection<TenancySecurityProfileRoleGroup>? _accountGroups;
+        
+        private ICollection<TenancySecurityProfileRoleGroup>? _accountGroups;
 
 
         /// <summary>
@@ -56,10 +54,8 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities
             get => _roles ??= [];
             set => _roles = value;
         }
-        /// <summary>
-        /// TODO: Is this Public needed?
-        /// </summary>
-        public ICollection<TenancySecurityProfileAccountRole>? _roles;
+        
+        private ICollection<TenancySecurityProfileAccountRole>? _roles;
 
 
         /// <summary>
@@ -71,10 +67,8 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities
             get => _permissionsAssignments ??= [];
             set => _permissionsAssignments = value;
         }
-        /// <summary>
-        /// TODO: Is this public needed?
-        /// </summary>
-        public ICollection<TenancySecurityProfileTenancySecurityProfilePermissionAssignment>? _permissionsAssignments;
+        
+        private ICollection<TenancySecurityProfileTenancySecurityProfilePermissionAssignment>? _permissionsAssignments;
 
 
 

@@ -8,7 +8,7 @@
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>$(AssemblyName)</Title>
 	  <Copyright>Copyright $(Authors)</Copyright>
-	  <!--<PackageReadmeFile>Packaging/readme.nuget.md</PackageReadmeFile>-->
+	  <PackageReadmeFile>_Packaging/readme.nuget.md</PackageReadmeFile>
 	  <!-- NU5039: Package missing readme - suppressed until readme is created -->
 	  <NoWarn>$(NoWarn);NU5039</NoWarn>
 	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>

@@ -30,16 +30,11 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities.TenancySpeci
         /// </summary>
         public ICollection<PrincipalSecurityProfilePermission> Permissions
         {
-            get => _permissions ??= [];//new Collection<PrincipalSecurityProfilePermission>();
+            get => _permissions ??= [];
             set => _permissions = value;
         }
-        /// <summary>
-        /// TODO: Why Public?
-        /// <para>
-        /// TODO: Confirm documentation
-        /// </para>
-        /// </summary>
-        public ICollection<PrincipalSecurityProfilePermission>? _permissions;
+        
+        private ICollection<PrincipalSecurityProfilePermission>? _permissions;
 
 
 
@@ -51,15 +46,11 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities.TenancySpeci
         /// </summary>
         public ICollection<PrincipalSecurityProfileRolePrincipalSecurityProfilePermissionAssignment> PermissionsAssignments
         {
-            get => _permissionsAssignments ??= [];//new Collection<PrincipalSecurityProfileRolePrincipalSecurityProfilePermissionAssignment>();
+            get => _permissionsAssignments ??= [];
             set => _permissionsAssignments = value;
         }
-        /// <summary>
-        /// TODO: Why Public?
-        /// </summary>
-#pragma warning disable CA1051 // Do not declare visible instance fields
-        public ICollection<PrincipalSecurityProfileRolePrincipalSecurityProfilePermissionAssignment>? _permissionsAssignments;
-#pragma warning restore CA1051 // Do not declare visible instance fields
+        
+        private ICollection<PrincipalSecurityProfileRolePrincipalSecurityProfilePermissionAssignment>? _permissionsAssignments;
 
     }
 

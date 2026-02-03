@@ -17,12 +17,13 @@ namespace App.Modules.Sys.Infrastructure.Time
         /// Start time,
         /// set by Constructor.
         /// </summary>
-        public readonly DateTimeOffset Start;
+        public DateTimeOffset Start { get; }
 
         /// <summary>
         /// Ended time.
         /// </summary>
         public DateTimeOffset? End { get; private set; }
+        
         /// <summary>
         /// Constructor
         /// </summary>

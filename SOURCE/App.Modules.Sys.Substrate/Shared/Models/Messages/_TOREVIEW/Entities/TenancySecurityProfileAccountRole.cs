@@ -30,10 +30,8 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities
             get => _permissions ??= [];
             set => _permissions = value;
         }
-        /// <summary>
-        /// TODO:Public required?
-        /// </summary>
-        public ICollection<TenancySecurityProfilePermission>? _permissions;
+        
+        private ICollection<TenancySecurityProfilePermission>? _permissions;
 
 
         /// <summary>
@@ -41,13 +39,11 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities
         /// </summary>
         public ICollection<TenancySecurityProfileRoleTenancySecurityProfilePermissionAssignment> PermissionsAssignments
         {
-            get => _permissionsAssignments ??= [];// new Collection<TenancySecurityProfileRoleTenancySecurityProfilePermissionAssignment>();
+            get => _permissionsAssignments ??= [];
             set => _permissionsAssignments = value;
         }
-        /// <summary>
-        /// TODO: Public required?
-        /// </summary>
-        public ICollection<TenancySecurityProfileRoleTenancySecurityProfilePermissionAssignment>? _permissionsAssignments;
+        
+        private ICollection<TenancySecurityProfileRoleTenancySecurityProfilePermissionAssignment>? _permissionsAssignments;
 
     }
 

@@ -47,10 +47,8 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities.TenancySpeci
             get => _accountGroups ??= [];
             set => _accountGroups = value;
         }
-        /// <summary>
-        /// TODO: Why public?
-        /// </summary>
-        public ICollection<PrincipalSecurityProfileRoleGroup>? _accountGroups;
+        
+        private ICollection<PrincipalSecurityProfileRoleGroup>? _accountGroups;
 
 
         /// <summary>
@@ -61,11 +59,8 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities.TenancySpeci
             get => _roles ??= [];
             set => _roles = value;
         }
-
-        /// <summary>
-        /// TODO: Why public?
-        /// </summary>
-        public ICollection<PrincipalSecurityProfileRole>? _roles = default!;
+        
+        private ICollection<PrincipalSecurityProfileRole>? _roles;
 
         //TODO: Could get large. Do we want this? Maybe it should only be on Account.
         //public ICollection<Account> Accounts { get; set; } 

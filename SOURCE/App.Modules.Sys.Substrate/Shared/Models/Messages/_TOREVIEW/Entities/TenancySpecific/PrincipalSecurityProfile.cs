@@ -39,29 +39,22 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities.TenancySpeci
         /// </summary>
         public ICollection<PrincipalSecurityProfileRoleGroup> AccountGroups
         {
-            get => _accountGroups ??= [];// new Collection<PrincipalSecurityProfileRoleGroup>();
+            get => _accountGroups ??= [];
             set => _accountGroups = value;
         }
-        /// <summary>
-        /// TODO: Why public
-        /// </summary>
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public ICollection<PrincipalSecurityProfileRoleGroup> _accountGroups;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        
+        private ICollection<PrincipalSecurityProfileRoleGroup>? _accountGroups;
 
         /// <summary>
         /// System Roles (not Group Roles)
         /// </summary>
         public ICollection<PrincipalSecurityProfileRole> Roles
         {
-            get => _roles ??= [];//new Collection<PrincipalSecurityProfileRole>();
+            get => _roles ??= [];
             set => _roles = value;
         }
-
-        /// <summary>
-        /// TODO: Why public
-        /// </summary>
-        public ICollection<PrincipalSecurityProfileRole>? _roles;
+        
+        private ICollection<PrincipalSecurityProfileRole>? _roles;
 
 
         /// <summary>
@@ -69,11 +62,11 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities.TenancySpeci
         /// </summary>
         public ICollection<PrincipalSecurityProfile_Permission_Assignment> PermissionsAssignments
         {
-            get => _permissionsAssignments ??= [];//new Collection<PrincipalSecurityProfile_Permission_Assignment>();
+            get => _permissionsAssignments ??= [];
             set => _permissionsAssignments = value;
         }
-        /// TODO: Why public
-        public ICollection<PrincipalSecurityProfile_Permission_Assignment>? _permissionsAssignments;
+        
+        private ICollection<PrincipalSecurityProfile_Permission_Assignment>? _permissionsAssignments;
 
 
 

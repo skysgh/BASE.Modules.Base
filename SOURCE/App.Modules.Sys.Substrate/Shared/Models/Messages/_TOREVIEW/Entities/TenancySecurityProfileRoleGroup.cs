@@ -48,13 +48,11 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities
         /// </summary>
         public ICollection<TenancySecurityProfileRoleGroup> AccountGroups
         {
-            get => _accountGroups ??= [];//new Collection<TenancySecurityProfileRoleGroup>();
+            get => _accountGroups ??= [];
             set => _accountGroups = value;
         }
-        /// <summary>
-        /// TODO: Why public?
-        /// </summary>
-        public ICollection<TenancySecurityProfileRoleGroup>? _accountGroups;
+        
+        private ICollection<TenancySecurityProfileRoleGroup>? _accountGroups;
 
 
         /// <summary>
@@ -62,13 +60,11 @@ namespace App.Modules.Sys.Shared.Models.Messages._TOREVIEW.Entities
         /// </summary>
         public ICollection<TenancySecurityProfileAccountRole> Roles
         {
-            get => _roles ??= [];//new Collection<TenancySecurityProfileAccountRole>();
+            get => _roles ??= [];
             set => _roles = value;
         }
-        /// <summary>
-        /// TODO: Why public?
-        /// </summary>
-        public ICollection<TenancySecurityProfileAccountRole>? _roles;
+        
+        private ICollection<TenancySecurityProfileAccountRole>? _roles;
 
         //TODO: Could get large. Do we want this? Maybe it should only be on Account.
         //public ICollection<Account> Accounts { get; set; } 
