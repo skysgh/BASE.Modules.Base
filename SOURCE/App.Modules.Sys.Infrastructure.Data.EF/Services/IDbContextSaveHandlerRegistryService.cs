@@ -18,7 +18,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Services
         /// <see cref="IDbCommitPreCommitProcessingStrategy"/>
         /// </summary>
         /// <param name="assembly"></param>
-        public void DiscoverAndRegister(Assembly assembly);
+        void DiscoverAndRegister(Assembly assembly);
 
         /// <summary>
         /// Gets all registered <see cref="IDbCommitPreCommitProcessingStrategy"/>

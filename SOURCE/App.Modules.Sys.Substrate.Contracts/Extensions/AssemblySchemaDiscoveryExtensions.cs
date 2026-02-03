@@ -31,7 +31,9 @@ namespace App
 
             // Only scan Infrastructure.Data layers by convention
             if (assemblyName?.Contains("Infrastructure.Data", StringComparison.OrdinalIgnoreCase) != true)
+            {
                 return results;
+            }
 
             try
             {

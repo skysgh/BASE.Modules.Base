@@ -66,7 +66,9 @@ namespace App.Modules.Sys.Interfaces.API.REST.Controllers.V1
             var session = await _sessionService.GetSessionByIdAsync(id, ct);
 
             if (session == null)
+            {
                 return NotFound();
+            }
 
             return Ok(session);
         }
@@ -89,7 +91,9 @@ namespace App.Modules.Sys.Interfaces.API.REST.Controllers.V1
         {
             // Verify session exists
             if (!await _sessionService.SessionExistsAsync(id, ct))
+            {
                 return NotFound();
+            }
 
             var operations = await _sessionService.GetSessionOperationsAsync(id, skip, take, ct);
             return Ok(operations);

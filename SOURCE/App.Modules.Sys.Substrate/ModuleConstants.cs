@@ -9,7 +9,7 @@ namespace App.Modules.Sys.Substrate
         /// <summary>
         /// Unique key to identify this logical module.
         /// </summary>
-        public const string Key = "Core";
+        public const string Key = "Sys";
 
         /// <summary>
         /// Unique Key to use as name for DbSchema 

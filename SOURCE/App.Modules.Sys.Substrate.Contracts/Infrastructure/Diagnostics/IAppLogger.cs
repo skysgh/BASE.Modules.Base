@@ -14,7 +14,7 @@ namespace App.Modules.Sys.Infrastructure.Diagnostics
         /// </summary>
         /// <param name="level"></param>
         /// <param name="message"></param>
-        public void Log(TraceLevel level, string message);
+        void Log(TraceLevel level, string message);
 
         /// <summary>
         /// Logs a trace message for detailed debugging information.

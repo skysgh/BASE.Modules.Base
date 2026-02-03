@@ -30,11 +30,15 @@ namespace App
                 var current = queue.Dequeue();
                 
                 if (moduleAssemblies.Contains(current))
+                {
                     continue;
+                }
                 
                 // Only include OUR assemblies (App.*)
                 if (!current.IsModuleAssembly())
+                {
                     continue;
+                }
                 
                 moduleAssemblies.Add(current);
                 

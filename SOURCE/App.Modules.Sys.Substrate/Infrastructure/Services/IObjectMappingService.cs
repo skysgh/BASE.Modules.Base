@@ -26,7 +26,7 @@ namespace App.Modules.Sys.Infrastructure.Services
         /// creates a new mapper from it.
         /// </summary>
         /// <param name="configuration"></param>
-        public void SetConfiguration<T>(T configuration)
+        void SetConfiguration<T>(T configuration)
             where T : class;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace App.Modules.Sys.Infrastructure.Services
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetConfiguration<T>()
+        T GetConfiguration<T>()
             where T : class;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace App.Modules.Sys.Infrastructure.Services
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetMapper<T>()
+        T GetMapper<T>()
             where T : class;
 
         /// <summary>

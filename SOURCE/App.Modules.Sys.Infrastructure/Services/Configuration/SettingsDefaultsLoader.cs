@@ -91,7 +91,9 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
             {
                 // Skip null/empty keys and values
                 if (string.IsNullOrEmpty(kvp.Key) || kvp.Value == null)
+                {
                     continue;
+                }
                 
                 // Normalize path: accept colons (:), slashes (/), and double underscores (__)
                 var key = NormalizePath(kvp.Key);
@@ -190,9 +192,18 @@ namespace App.Modules.Sys.Infrastructure.Services.Configuration
         /// </summary>
         private string InferType(string value)
         {
-            if (bool.TryParse(value, out _)) return "System.Boolean";
-            if (int.TryParse(value, out _)) return "System.Int32";
-            if (double.TryParse(value, out _)) return "System.Double";
+            if (bool.TryParse(value, out _))
+            {
+                return "System.Boolean";
+            }
+            if (int.TryParse(value, out _))
+            {
+                return "System.Int32";
+            }
+            if (double.TryParse(value, out _))
+            {
+                return "System.Double";
+            }
             return "System.String";
         }
 

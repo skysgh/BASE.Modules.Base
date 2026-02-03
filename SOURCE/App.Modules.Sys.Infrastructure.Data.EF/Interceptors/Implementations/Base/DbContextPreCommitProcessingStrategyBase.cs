@@ -1,15 +1,15 @@
+using System;
+using App;
+using App.Base.Infrastructure.Services;
+using App.Modules.Sys.Infrastructure.Data.EF.Interceptors;
+using App.Modules.Sys.Infrastructure.NewFolder.Services;
+using App.Modules.Sys.Infrastructure.Services;
+using App.Modules.Sys.Shared.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Base
 {
-    using System;
-    using App;
-    using App.Base.Infrastructure.Services;
-    using App.Modules.Sys.Infrastructure.Data.EF.Interceptors;
-    using App.Modules.Sys.Infrastructure.NewFolder.Services;
-    using App.Modules.Sys.Infrastructure.Services;
-    using App.Modules.Sys.Shared.Models;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.ChangeTracking;
-
     /// <summary>
     ///     Abstract base class for a strategy to be applied when persisting changes.
     /// <para>
@@ -32,7 +32,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
         /// <summary>
         ///     The _current user (TODO: what, name? id?)
         /// </summary>
-        string? _currentUser;
+        private string? _currentUser;
         /// <summary>
         /// 
         /// </summary>
@@ -41,7 +41,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
 
         /// <summary>
         /// </summary>
-        ChangeTracker? _dbChangeTracker;
+        private ChangeTracker? _dbChangeTracker;
         
         /// <summary>
         /// 
@@ -50,7 +50,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
 
         /// <summary>
         /// </summary>
-        DbContext? _dbContext;
+        private DbContext? _dbContext;
 
         /// <summary>
         /// 
@@ -64,7 +64,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
         ///     must match before the 
         ///     Strategy is applied.
         /// </summary>
-        /*readonly*/ Type _interfaceType;
+        private readonly Type _interfaceType;
         // ReSharper restore InconsistentNaming
 
 
@@ -72,7 +72,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
         /// <summary>
         ///     The _now UTC
         /// </summary>
-        DateTimeOffset _nowUtc;
+        private DateTimeOffset _nowUtc;
         /// <summary>
         /// 
         /// </summary>
@@ -125,7 +125,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
         /// <summary>
         ///     The _order
         /// </summary>
-        readonly int _order = 100;
+        private readonly int _order = 100;
 
         /// <summary>
         ///     Processes the specified db change tracker,
@@ -235,7 +235,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
         /// <summary>
         ///     The _date time service
         /// </summary>
-        readonly IUniversalDateTimeService _dateTimeService;
+        private readonly IUniversalDateTimeService _dateTimeService;
 
         /// <summary>
         /// 
@@ -245,7 +245,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
         /// <summary>
         ///     The _principal service
         /// </summary>
-        readonly IPrincipalService _principalService;
+        private readonly IPrincipalService _principalService;
 
         /// <summary>
         /// 
@@ -258,7 +258,6 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Interceptors.Implementations.Ba
         ///     <see cref="EntityEntry.State" /> must
         ///     match before the Strategy is applied.
         /// </summary>
-        /*readonly*/
-        EntityState[] _states;
+        private readonly EntityState[] _states;
     }
 }

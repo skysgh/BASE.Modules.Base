@@ -1,7 +1,8 @@
+using App.Modules.Sys.Shared.Services;
+using System;
+
 namespace App.Modules.Sys.Infrastructure.Azure.Services
 {
-    using App.Modules.Sys.Shared.Services;
-    using System;
 
     /// <summary>
     /// Contract for a service to manage Redis Cache in Azure

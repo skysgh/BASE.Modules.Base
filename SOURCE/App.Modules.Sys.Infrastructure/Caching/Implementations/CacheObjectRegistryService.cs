@@ -235,7 +235,9 @@ namespace App.Modules.Sys.Infrastructure.Caching.Implementations
         private void ThrowIfDisposed()
         {
             if (_disposed)
+            {
                 throw new ObjectDisposedException(nameof(CacheObjectRegistryService));
+            }
         }
     }
 }

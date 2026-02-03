@@ -28,7 +28,9 @@ namespace App.Modules.Sys.Interfaces.API.REST.Controllers.V1
                     ?? User?.FindFirst("userId")?.Value;
                 
                 if (Guid.TryParse(userIdClaim, out var userId))
+                {
                     return userId;
+                }
                 
                 return null;
             }

@@ -36,7 +36,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations.Base
         /// Note: Except for the default schema, whose name is ''.
         /// </para>
         /// </summary>
-        protected string? SchemaKey { get; set; }
+        protected string SchemaKey { get; set; } = string.Empty;
 
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.DbContexts.Implementations.Base
         /// <summary>
         /// 
         /// </summary>
-        IModelBuilderOrchestrator _modelBuilderOrchestrator;
+        private readonly IModelBuilderOrchestrator _modelBuilderOrchestrator;
 
 
         /// <summary>

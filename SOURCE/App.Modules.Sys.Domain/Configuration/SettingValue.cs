@@ -58,8 +58,14 @@ namespace App.Modules.Sys.Domain.Configuration
         {
             get
             {
-                if (WorkspaceId == "*" && UserId == "*") return SettingLevel.System;
-                if (UserId == "*") return SettingLevel.Workspace;
+                if (WorkspaceId == "*" && UserId == "*")
+                {
+                    return SettingLevel.System;
+                }
+                if (UserId == "*")
+                {
+                    return SettingLevel.Workspace;
+                }
                 return SettingLevel.Person;
             }
         }

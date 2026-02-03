@@ -1,8 +1,8 @@
+using App.Modules.Sys.Infrastructure.Azure.Models.Enums;
+using App.Modules.Sys.Shared.Services;
+
 namespace App.Modules.Sys.Infrastructure.Azure.Services
 {
-    using App.Modules.Sys.Infrastructure.Azure.Models.Enums;
-    using App.Modules.Sys.Shared.Services;
-
     /// <summary>
     /// Contract for an Infrastructure Service to 
     /// manage access to Azure Storage Accounts

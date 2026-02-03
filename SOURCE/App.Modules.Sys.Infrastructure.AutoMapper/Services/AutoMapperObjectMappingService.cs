@@ -86,7 +86,9 @@ namespace App.Modules.Sys.Infrastructure.AutoMapper.Services
             // Get rules from builder
             var rulesProperty = builder.GetType().GetProperty("Rules");
             if (rulesProperty?.GetValue(builder) is not System.Collections.IList rules)
+            {
                 return;
+            }
 
             // Create AutoMapper map
             var createMapMethod = typeof(IMapperConfigurationExpression)
@@ -94,7 +96,10 @@ namespace App.Modules.Sys.Infrastructure.AutoMapper.Services
                 .MakeGenericMethod(from, to);
             
             var mapConfig = createMapMethod?.Invoke(cfg, null);
-            if (mapConfig == null) return;
+            if (mapConfig == null)
+            {
+                return;
+            }
 
             // Apply each rule
             foreach (var rule in rules)

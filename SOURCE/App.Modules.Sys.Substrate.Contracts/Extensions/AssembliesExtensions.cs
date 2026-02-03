@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -38,7 +38,10 @@ namespace App
         {
             var name = assembly.GetName().Name!;
 
-            if (visited.Contains(name)) return;
+            if (visited.Contains(name))
+            {
+                return;
+            }
 
             if (visiting.Contains(name))
             {

@@ -1,10 +1,10 @@
+using System.Collections.Generic;
+using System.Threading;
+using App.Modules.Sys.Infrastructure.Services;
+using App.Modules.Sys.Shared.Models.Enums;
+
 namespace App.Base.Infrastructure.Services.Implementations
 {
-    using System.Collections.Generic;
-    using System.Threading;
-    using App.Modules.Sys.Infrastructure.Services;
-    using App.Modules.Sys.Shared.Models.Enums;
-
     /// <summary>
     ///     Implementation of the
     ///     <see cref="IDiagnosticsTracingService" />
