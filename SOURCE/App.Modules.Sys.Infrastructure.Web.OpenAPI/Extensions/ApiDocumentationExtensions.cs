@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Scalar.AspNetCore;
 using System.IO;
 
 #pragma warning disable IDE0130 // Namespace does not match folder structure
@@ -113,19 +114,25 @@ namespace App
                 });
             }
 
-            // TODO: Scalar UI integration pending
-            // Scalar.AspNetCore 2.x API requires IEndpointRouteBuilder, not WebApplication directly
-            // Will add once proper integration pattern is determined
-            // if (enableScalar)
-            // {
-            //     app.MapScalarApiReference()
-            //         .WithName($"scalar-{apiVersion}");
-            // }
+            if (enableScalar)
+            {
+                // Scalar UI: /scalar/v1
+                // CRITICAL: Must call MapOpenApi() first (see enableOpenApi above)
+                app.MapScalarApiReference(options =>
+                {
+                    options
+                        .WithTitle($"BASE System API {apiVersion}")
+                        .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace);
+                    // Note: Sidebar is shown by default in Scalar 2.x
+                });
+            }
 
             return app;
         }
     }
 }
+
+
 
 
 
