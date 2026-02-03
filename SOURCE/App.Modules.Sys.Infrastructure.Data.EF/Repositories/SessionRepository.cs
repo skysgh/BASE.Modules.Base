@@ -18,11 +18,16 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories
     {
         private readonly ModuleDbContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the SessionRepository class.
+        /// </summary>
+        /// <param name="context">The database context for session data access.</param>
         public SessionRepository(ModuleDbContext context)
         {
             _context = context;
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Session>> GetSessionsAsync(
             int skip,
             int take,
@@ -47,12 +52,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories
                 .ToListAsync(ct);
         }
 
-/// <summary>
-/// TODO...
-/// </summary>
-/// <param name="id"></param>
-/// <param name="ct"></param>
-/// <returns></returns>
+        /// <inheritdoc/>
         public async Task<Session?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
             return await _context.Sessions
@@ -60,11 +60,13 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories
                 .FirstOrDefaultAsync(s => s.Id == id, ct);
         }
 
+        /// <inheritdoc/>
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
         {
             return await _context.Sessions.AnyAsync(s => s.Id == id, ct);
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<SessionOperation>> GetOperationsAsync(
             Guid sessionId,
             int skip,
