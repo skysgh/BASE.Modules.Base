@@ -41,10 +41,14 @@ namespace App.Modules.Sys.Shared.Services.Caching
             get
             {
                 if (!Duration.HasValue)
+                {
                     return false; // Never expires
+                }
 
                 if (LastRefreshed == DateTime.MinValue)
+                {
                     return true; // Never loaded
+                }
 
                 return DateTime.UtcNow > LastRefreshed.Add(Duration.Value);
             }
@@ -65,7 +69,9 @@ namespace App.Modules.Sys.Shared.Services.Caching
             
             // Quick check before acquiring lock
             if (!IsExpired && _consecutiveFailures == 0)
+            {
                 return;
+            }
 
             // Check circuit breaker - exponential backoff after repeated failures
             if (_consecutiveFailures >= MaxFailuresBeforeBackoff && _lastFailure.HasValue)
@@ -83,7 +89,9 @@ namespace App.Modules.Sys.Shared.Services.Caching
             {
                 // Double-check inside lock
                 if (!IsExpired && _consecutiveFailures == 0)
+                {
                     return;
+                }
 
                 try
                 {
@@ -163,7 +171,9 @@ namespace App.Modules.Sys.Shared.Services.Caching
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
