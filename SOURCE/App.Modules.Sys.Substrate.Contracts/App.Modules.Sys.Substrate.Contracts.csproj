@@ -17,6 +17,12 @@
 	  <PackageReadmeFile>_Packaging/readme.nuget.md</PackageReadmeFile>
 	  <!--<BaseOutputPath>..\..\..\..\SOURCE\App.Host\MODULES\</BaseOutputPath>-->
 	  <RootNamespace>App.Modules.Sys</RootNamespace>
+	  
+	  <!-- CA1716: Namespace conflicts with reserved keyword 'Shared' -->
+	  <!-- Global suppression is intentional here - avoid per-file suppressions when possible, -->
+	  <!-- but "Shared" namespace is a deliberate architectural choice used extensively throughout -->
+	  <!-- this project. Renaming would require a major breaking change across the entire codebase. -->
+	  <NoWarn>$(NoWarn);CA1716</NoWarn>
   </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

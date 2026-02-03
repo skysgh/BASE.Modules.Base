@@ -175,8 +175,7 @@ namespace App.Modules.Sys.Shared.Services.Caching
 
         private void ThrowIfDisposed()
         {
-            if (_disposed)
-                throw new ObjectDisposedException(GetType().Name);
+            ObjectDisposedException.ThrowIf(_disposed, GetType().Name);
         }
     }
 }
