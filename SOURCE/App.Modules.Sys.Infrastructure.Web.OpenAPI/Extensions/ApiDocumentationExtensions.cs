@@ -12,16 +12,16 @@ namespace App
     /// <summary>
     /// Extension methods for API documentation configuration.
     /// Supports three UI options (all versioned):
-    /// - OpenAPI (native .NET 10): /documentation/apis/v1/openapi.json
-    /// - Swagger UI: /documentation/apis/v1/swagger
-    /// - Scalar UI: /scalar/v1
-    /// CRITICAL: All endpoints MUST include version information for maintainability!
+    /// - OpenAPI (native .NET 10): /openapi/{module}-{version}.json
+    /// - Swagger UI: /documentation/apis/{module}/{version}/swagger
+    /// - Scalar UI: /documentation/apis/{module}/{version}/scalar
+    /// CRITICAL: All endpoints MUST include version AND module for maintainability!
     /// </summary>
     public static class ApiDocumentationExtensions
     {
         /// <summary>
         /// Base path for all API documentation endpoints.
-        /// ALWAYS includes version number - this is NOT optional!
+        /// ALWAYS includes module and version - this is NOT optional!
         /// </summary>
         private const string DocumentationBasePath = "/documentation/apis";
         
@@ -31,35 +31,79 @@ namespace App
         private const string DefaultApiVersion = "v1";
 
         /// <summary>
-        /// Add API documentation services (all three: OpenAPI + Swagger + Scalar).
-        /// Call this during service configuration (before builder.Build()).
+        /// Add API documentation services for a specific module.
+        /// Call this for EACH logical module (Sys, Social, Work, etc.)
         /// </summary>
         /// <param name="services">Service collection</param>
+        /// <param name="moduleName">Module name (e.g., "sys", "social", "work")</param>
         /// <param name="apiVersion">API version (default: v1). MUST be specified!</param>
         public static IServiceCollection AddApiDocumentation(
             this IServiceCollection services,
+            string moduleName,
             string apiVersion = DefaultApiVersion)
         {
-            // 1. Built-in OpenAPI (.NET 9+) - Modern, lightweight
-            services.AddOpenApi(apiVersion);
+            var documentName = $"{moduleName}-{apiVersion}";
+            var moduleTitle = $"{char.ToUpper(moduleName[0])}{moduleName.Substring(1)} Module API";
             
-            // 2. API versioning support
-            services.AddApiVersioning(options =>
+            // 1. Built-in OpenAPI (.NET 9+) - Modern, lightweight
+            services.AddOpenApi(documentName, options =>
             {
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ReportApiVersions = true;
+                options.AddDocumentTransformer((document, context, ct) =>
+                {
+                    document.Info = new()
+                    {
+                        Title = $"BASE {moduleTitle}",
+                        Version = apiVersion,
+                        Description = $"Multi-tenant {moduleName} module management API with versioned endpoints"
+                    };
+                    return Task.CompletedTask;
+                });
             });
+            
+            // 2. API versioning support (if not already added)
+            if (!services.Any(x => x.ServiceType.Name.Contains("ApiVersioning")))
+            {
+                services.AddApiVersioning(options =>
+                {
+                    options.DefaultApiVersion = new ApiVersion(1, 0);
+                    options.AssumeDefaultVersionWhenUnspecified = true;
+                    options.ReportApiVersions = true;
+                });
+            }
 
             // 3. Swagger/Swashbuckle - Traditional, widely adopted
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc(apiVersion, new()
+                options.SwaggerDoc(documentName, new()
                 {
-                    Title = $"BASE System API {apiVersion}",
+                    Title = $"BASE {moduleTitle}",
                     Version = apiVersion,
-                    Description = "Multi-tenant system management API with versioned endpoints"
+                    Description = $"Multi-tenant {moduleName} module API with versioned endpoints"
+                });
+                
+                // CRITICAL: Filter endpoints by module namespace
+                options.DocInclusionPredicate((docName, apiDesc) =>
+                {
+                    if (docName != documentName)
+                    {
+                        return false;
+                    }
+                    
+                    // Include endpoints from this module's namespace
+                    var controllerType = apiDesc.ActionDescriptor.EndpointMetadata
+                        .OfType<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>()
+                        .FirstOrDefault()?.ControllerTypeInfo;
+                    
+                    if (controllerType == null)
+                    {
+                        return false;
+                    }
+                    
+                    // Check if controller belongs to this module
+                    var controllerNamespace = controllerType.Namespace ?? "";
+                    return controllerNamespace.Contains($".Modules.{char.ToUpper(moduleName[0])}{moduleName.Substring(1)}", 
+                        StringComparison.OrdinalIgnoreCase);
                 });
                 
                 // Include XML comments if available
@@ -74,65 +118,70 @@ namespace App
         }
 
         /// <summary>
-        /// Configure API documentation middleware (all three UIs).
+        /// Configure API documentation middleware for a specific module.
         /// Call this after app.Build() in the middleware pipeline.
         /// </summary>
         /// <param name="app">Web application</param>
-        /// <param name="apiVersion">API version (default: v1). MUST match AddApiDocumentation!</param>
-        /// <param name="enableOpenApi">Enable built-in OpenAPI endpoint (default: true)</param>
-        /// <param name="enableSwagger">Enable Swagger UI (default: true)</param>
-        /// <param name="enableScalar">Enable Scalar UI (default: true)</param>
+        /// <param name="moduleName">Module name (must match AddApiDocumentation call)</param>
+        /// <param name="apiVersion">API version (must match AddApiDocumentation call)</param>
+        /// <param name="enableOpenApi">Enable built-in OpenAPI endpoint</param>
+        /// <param name="enableSwagger">Enable Swagger UI</param>
+        /// <param name="enableScalar">Enable Scalar UI</param>
         public static WebApplication UseApiDocumentation(
             this WebApplication app,
+            string moduleName,
             string apiVersion = DefaultApiVersion,
             bool enableOpenApi = true,
             bool enableSwagger = true,
             bool enableScalar = true)
         {
+            var documentName = $"{moduleName}-{apiVersion}";
+            
             if (enableOpenApi)
             {
-                // STANDARD: /openapi/v1.json (tools/libraries expect this)
-                app.MapOpenApi($"/openapi/{apiVersion}.json")
-                    .WithName($"openapi-{apiVersion}");
+                // STANDARD: /openapi/sys-v1.json (tools/libraries expect pattern)
+                app.MapOpenApi($"/openapi/{documentName}.json")
+                    .WithName($"openapi-{documentName}");
             }
 
             if (enableSwagger)
             {
-                // STANDARD: /swagger/v1/swagger.json (tools/libraries expect this)
+                // STANDARD: /swagger/sys-v1/swagger.json (tools/libraries expect pattern)
                 app.UseSwagger(c =>
                 {
                     c.RouteTemplate = "/swagger/{documentName}/swagger.json";
                 });
                 
-                // CUSTOM: /documentation/apis/v1/swagger (unified documentation location)
+                // CUSTOM: /documentation/apis/sys/v1/swagger (unified module docs)
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint(
-                        $"/swagger/{apiVersion}/swagger.json",
-                        $"BASE System API {apiVersion}");
-                    c.RoutePrefix = $"{DocumentationBasePath.TrimStart('/')}/{apiVersion}/swagger";
+                        $"/swagger/{documentName}/swagger.json",
+                        $"{char.ToUpper(moduleName[0])}{moduleName.Substring(1)} Module API {apiVersion}");
+                    c.RoutePrefix = $"{DocumentationBasePath.TrimStart('/')}/{moduleName}/{apiVersion}/swagger";
                 });
             }
 
             if (enableScalar)
             {
-                // CUSTOM: /documentation/apis/v1/scalar (unified documentation location)
-                // Reads from STANDARD /openapi/v1.json
+                // CUSTOM: /documentation/apis/sys/v1/scalar (unified module docs)
+                // Reads from STANDARD /openapi/sys-v1.json
                 app.MapScalarApiReference(options =>
                 {
                     options
-                        .WithTitle($"BASE System API {apiVersion}")
+                        .WithTitle($"BASE {char.ToUpper(moduleName[0])}{moduleName.Substring(1)} Module API {apiVersion}")
                         .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace)
-                        .WithOpenApiRoutePattern($"/openapi/{apiVersion}.json");
+                        .WithOpenApiRoutePattern($"/openapi/{documentName}.json");
                 })
-                .WithName($"scalar-{apiVersion}")
-                .RequireHost($"*:*/documentation/apis/{apiVersion}/scalar");  // Custom path
+                .WithName($"scalar-{documentName}")
+                .RequireHost($"*:*/documentation/apis/{moduleName}/{apiVersion}/scalar");
             }
 
             return app;
         }
     }
 }
+
 
 
 
