@@ -104,19 +104,20 @@ namespace App
                     c.RouteTemplate = "/swagger/{documentName}/swagger.json";
                 });
                 
-                // STANDARD: /swagger (industry convention for Swagger UI)
+                // CUSTOM: /documentation/apis/v1/swagger (unified documentation location)
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint(
                         $"/swagger/{apiVersion}/swagger.json",
                         $"BASE System API {apiVersion}");
-                    c.RoutePrefix = "swagger";  // Standard path, not custom
+                    c.RoutePrefix = $"{DocumentationBasePath.TrimStart('/')}/{apiVersion}/swagger";
                 });
             }
 
             if (enableScalar)
             {
-                // CUSTOM: /documentation/apis/v1/scalar (your choice for unified docs)
+                // CUSTOM: /documentation/apis/v1/scalar (unified documentation location)
+                // Reads from STANDARD /openapi/v1.json
                 app.MapScalarApiReference(options =>
                 {
                     options
@@ -132,6 +133,7 @@ namespace App
         }
     }
 }
+
 
 
 
