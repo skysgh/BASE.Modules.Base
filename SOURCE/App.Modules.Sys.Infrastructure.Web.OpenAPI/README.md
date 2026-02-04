@@ -2,12 +2,24 @@
 
 ## Overview
 
-This project provides **module-based, versioned API documentation** using three UI options:
-- **OpenAPI** (native .NET 10) - Machine-readable JSON
-- **Swagger UI** - Traditional interactive documentation
-- **Scalar UI** - Modern, beautiful API explorer
+This project provides **module-based, versioned API documentation** using:
+- **OpenAPI** (native .NET 10) - Machine-readable JSON ✅ WORKING
+- **Swagger UI** - Traditional interactive documentation ✅ WORKING
+- **Scalar UI** - Modern API explorer ⚠️ DISABLED (pending investigation)
 
-## Architecture Principles
+## ⚠️ Scalar Status
+
+**DISABLED** in Program.cs due to auto-discovery issue:
+- Scalar looks for document named "v1"
+- We have "sys-v1" (module-based naming)
+- Investigation needed on Scalar's document discovery mechanism
+- Infrastructure remains in place for future use
+
+**Current Working UIs:**
+- ✅ Swagger UI at `/documentation/apis/swagger/sys/v1/`
+- ❌ Scalar UI disabled (see issue above)
+
+---
 
 ### ✅ **MODULE-BASED**
 Each **Logical Module** gets its own isolated documentation to prevent overwhelming users:
