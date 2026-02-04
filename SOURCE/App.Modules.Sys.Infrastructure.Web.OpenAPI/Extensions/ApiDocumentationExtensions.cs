@@ -129,7 +129,7 @@ namespace App
         /// <param name="apiVersion">API version (must match AddApiDocumentation call)</param>
         /// <param name="enableOpenApi">Enable built-in OpenAPI endpoint</param>
         /// <param name="enableSwagger">Enable Swagger UI</param>
-        /// <param name="enableScalar">Enable Scalar UI</param>
+        /// <param name="enableScalar">Enable Scalar UI redirect (actual UI configured once globally)</param>
         public static WebApplication UseApiDocumentation(
             this WebApplication app,
             string moduleName,
@@ -167,22 +167,12 @@ namespace App
 
             if (enableScalar)
             {
-                // CUSTOM: /documentation/apis/scalar/sys/v1/ (consistent pattern)
-                // Maps to unique route to avoid conflicts between modules
-                app.MapScalarApiReference(options =>
+                // CUSTOM: /documentation/apis/scalar/sys/v1/ → redirects to /documentation/apis/scalar/
+                // Actual Scalar UI is registered once via UseScalarForAllModules()
+                app.MapGet($"{DocumentationBasePath}/scalar/{moduleName}/{apiVersion}/", () =>
                 {
-                    options
-                        .WithTitle($"BASE {char.ToUpper(moduleName[0])}{moduleName.Substring(1)} Module API {apiVersion}")
-                        .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace)
-                        .WithOpenApiRoutePattern($"/openapi/{documentName}.json");
-                })
-                .WithName($"scalar-{documentName}")
-                .WithGroupName(documentName);
-                
-                // Map Scalar UI to custom path using MapGet redirect
-                app.MapGet($"{DocumentationBasePath}/scalar/{moduleName}/{apiVersion}", () =>
-                {
-                    return Results.Redirect($"/scalar/{apiVersion}");
+                    // Redirect to main Scalar UI (will show dropdown with all modules)
+                    return Results.Redirect($"{DocumentationBasePath}/scalar/");
                 })
                 .WithName($"scalar-redirect-{documentName}")
                 .ExcludeFromDescription();
@@ -190,8 +180,34 @@ namespace App
 
             return app;
         }
+
+        /// <summary>
+        /// Configure Scalar UI once for ALL modules at /documentation/apis/scalar/.
+        /// Call this AFTER all UseApiDocumentation() calls.
+        /// Scalar auto-discovers all /openapi/*.json documents.
+        /// </summary>
+        /// <param name="app">Web application</param>
+        public static WebApplication UseScalarForAllModules(
+            this WebApplication app)
+        {
+            // Map Scalar to custom path: /documentation/apis/scalar/
+            app.MapScalarApiReference(options =>
+            {
+                options
+                    .WithTitle("BASE Platform API Documentation")
+                    .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace);
+                // Scalar auto-discovers all /openapi/*.json endpoints
+            })
+            .WithName("scalar-main")
+            .RequireHost($"*:*{DocumentationBasePath}/scalar");
+            
+            return app;
+        }
     }
 }
+
+
+
 
 
 
