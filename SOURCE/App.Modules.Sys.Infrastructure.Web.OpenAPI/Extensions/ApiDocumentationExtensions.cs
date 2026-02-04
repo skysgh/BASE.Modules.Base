@@ -167,12 +167,10 @@ namespace App
 
             if (enableScalar)
             {
-                // CUSTOM: /documentation/apis/scalar/sys/v1/ → redirects to /documentation/apis/scalar/
-                // Actual Scalar UI is registered once via UseScalarForAllModules()
+                // Redirect from: /documentation/apis/scalar/sys/v1/ → /scalar
                 app.MapGet($"{DocumentationBasePath}/scalar/{moduleName}/{apiVersion}/", () =>
                 {
-                    // Redirect to main Scalar UI (will show dropdown with all modules)
-                    return Results.Redirect($"{DocumentationBasePath}/scalar/");
+                    return Results.Redirect("/scalar");
                 })
                 .WithName($"scalar-redirect-{documentName}")
                 .ExcludeFromDescription();
@@ -182,7 +180,8 @@ namespace App
         }
 
         /// <summary>
-        /// Configure Scalar UI once for ALL modules at /documentation/apis/scalar/.
+        /// Configure Scalar UI once for ALL modules at /scalar (default).
+        /// Creates convenience redirects from /documentation/apis/scalar/ paths.
         /// Call this AFTER all UseApiDocumentation() calls.
         /// Scalar auto-discovers all /openapi/*.json documents.
         /// </summary>
@@ -190,21 +189,28 @@ namespace App
         public static WebApplication UseScalarForAllModules(
             this WebApplication app)
         {
-            // Map Scalar to custom path: /documentation/apis/scalar/
+            // Scalar at default /scalar path (Scalar's internal routing is inflexible)
             app.MapScalarApiReference(options =>
             {
                 options
                     .WithTitle("BASE Platform API Documentation")
                     .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace);
                 // Scalar auto-discovers all /openapi/*.json endpoints
-            })
-            .WithName("scalar-main")
-            .RequireHost($"*:*{DocumentationBasePath}/scalar");
+            });
+            
+            // Convenience redirect: /documentation/apis/scalar/ → /scalar
+            app.MapGet($"{DocumentationBasePath}/scalar/", () => Results.Redirect("/scalar"))
+                .WithName("scalar-base-redirect")
+                .ExcludeFromDescription();
             
             return app;
         }
     }
 }
+
+
+
+
 
 
 
