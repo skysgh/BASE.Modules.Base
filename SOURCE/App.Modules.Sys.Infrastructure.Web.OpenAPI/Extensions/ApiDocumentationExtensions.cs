@@ -91,24 +91,24 @@ namespace App
         {
             if (enableOpenApi)
             {
-                // Native .NET OpenAPI: /documentation/apis/v1/openapi.json
-                app.MapOpenApi($"{DocumentationBasePath}/{apiVersion}/openapi.json")
+                // Native .NET OpenAPI: /openapi/v1.json (STANDARD LOCATION for tools)
+                app.MapOpenApi($"/openapi/{apiVersion}.json")
                     .WithName($"openapi-{apiVersion}");
             }
 
             if (enableSwagger)
             {
-                // Swagger JSON: /documentation/apis/v1/swagger.json
+                // Swagger JSON: /swagger/v1/swagger.json (STANDARD LOCATION for tools)
                 app.UseSwagger(c =>
                 {
-                    c.RouteTemplate = $"{DocumentationBasePath}/{apiVersion}/swagger.json";
+                    c.RouteTemplate = "/swagger/{documentName}/swagger.json";
                 });
                 
-                // Swagger UI: /documentation/apis/v1/swagger
+                // Swagger UI: /documentation/apis/v1/swagger (CUSTOM LOCATION for humans)
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint(
-                        $"{DocumentationBasePath}/{apiVersion}/swagger.json",
+                        $"/swagger/{apiVersion}/swagger.json",
                         $"BASE System API {apiVersion}");
                     c.RoutePrefix = $"{DocumentationBasePath.TrimStart('/')}/{apiVersion}/swagger";
                 });
@@ -117,13 +117,13 @@ namespace App
             if (enableScalar)
             {
                 // Scalar UI: /scalar/v1
-                // CRITICAL: Must call MapOpenApi() first AND tell Scalar where to find it
+                // Points to standard OpenAPI location for tool compatibility
                 app.MapScalarApiReference(options =>
                 {
                     options
                         .WithTitle($"BASE System API {apiVersion}")
                         .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace)
-                        .WithOpenApiRoutePattern($"{DocumentationBasePath}/{apiVersion}/openapi.json");
+                        .WithOpenApiRoutePattern($"/openapi/{apiVersion}.json");
                 });
             }
 
@@ -131,6 +131,7 @@ namespace App
         }
     }
 }
+
 
 
 
