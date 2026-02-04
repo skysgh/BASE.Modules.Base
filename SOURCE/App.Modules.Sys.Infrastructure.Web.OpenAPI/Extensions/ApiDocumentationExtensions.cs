@@ -91,46 +91,48 @@ namespace App
         {
             if (enableOpenApi)
             {
-                // Native .NET OpenAPI: /openapi/v1.json (STANDARD LOCATION for tools)
+                // STANDARD: /openapi/v1.json (tools/libraries expect this)
                 app.MapOpenApi($"/openapi/{apiVersion}.json")
                     .WithName($"openapi-{apiVersion}");
             }
 
             if (enableSwagger)
             {
-                // Swagger JSON: /swagger/v1/swagger.json (STANDARD LOCATION for tools)
+                // STANDARD: /swagger/v1/swagger.json (tools/libraries expect this)
                 app.UseSwagger(c =>
                 {
                     c.RouteTemplate = "/swagger/{documentName}/swagger.json";
                 });
                 
-                // Swagger UI: /documentation/apis/v1/swagger (CUSTOM LOCATION for humans)
+                // STANDARD: /swagger (industry convention for Swagger UI)
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint(
                         $"/swagger/{apiVersion}/swagger.json",
                         $"BASE System API {apiVersion}");
-                    c.RoutePrefix = $"{DocumentationBasePath.TrimStart('/')}/{apiVersion}/swagger";
+                    c.RoutePrefix = "swagger";  // Standard path, not custom
                 });
             }
 
             if (enableScalar)
             {
-                // Scalar UI: /scalar/v1
-                // Points to standard OpenAPI location for tool compatibility
+                // CUSTOM: /documentation/apis/v1/scalar (your choice for unified docs)
                 app.MapScalarApiReference(options =>
                 {
                     options
                         .WithTitle($"BASE System API {apiVersion}")
                         .WithTheme(Scalar.AspNetCore.ScalarTheme.DeepSpace)
                         .WithOpenApiRoutePattern($"/openapi/{apiVersion}.json");
-                });
+                })
+                .WithName($"scalar-{apiVersion}")
+                .RequireHost($"*:*/documentation/apis/{apiVersion}/scalar");  // Custom path
             }
 
             return app;
         }
     }
 }
+
 
 
 
