@@ -9,10 +9,13 @@ namespace App.Modules.Sys.Shared.Constants;
 /// - Base paths are constants (prevents typos, enables refactoring)
 /// - Controller names use {controller} template (automatic, rename-safe)
 /// 
+/// Two patterns supported:
+/// 1. Hardcoded version: api/v1/{controller}
+/// 2. API versioning attribute: api/rest/v{version:apiVersion}/{controller}
+/// 
 /// Usage:
-/// [Route(ApiRoutes.V1.ControllerRoute)]
-/// public class UsersController : ControllerBase { }
-/// → Results in: /api/v1/users
+/// [Route(ApiRoutes.V1.ControllerRoute)]           // Hardcoded v1
+/// [Route(ApiRoutes.Versioned.ControllerRoute)]    // Attribute-based versioning
 /// 
 /// Benefits:
 /// - ✅ Single source of truth for base paths
@@ -23,12 +26,56 @@ namespace App.Modules.Sys.Shared.Constants;
 public static class ApiRoutes
 {
     /// <summary>
-    /// API base prefix (no version).
+    /// API base prefix (no version, no module).
     /// </summary>
     public const string ApiBase = "api";
 
+    // ========================================
+    // PATTERN 1: API VERSIONING ATTRIBUTE
+    // ========================================
+    
     /// <summary>
-    /// Version 1 API routes.
+    /// API routes using [ApiVersion] attribute for versioning.
+    /// Use with [ApiVersion("1.0")] on controller.
+    /// </summary>
+    public static class Versioned
+    {
+        /// <summary>
+        /// Base path for versioned APIs: api/rest/v{version:apiVersion}
+        /// Version determined by [ApiVersion] attribute on controller.
+        /// </summary>
+        public const string VersionedBase = $"{ApiBase}/rest/v{{version:apiVersion}}";
+
+        /// <summary>
+        /// Standard controller route template with API versioning.
+        /// Example: api/rest/v1.0/{controller}
+        /// </summary>
+        public const string ControllerRoute = $"{VersionedBase}/{{controller}}";
+
+        /// <summary>
+        /// Module-specific versioned routes (Sys module).
+        /// </summary>
+        public static class Sys
+        {
+            /// <summary>
+            /// Sys module base: api/sys/rest/v{version:apiVersion}
+            /// </summary>
+            public const string ModuleVersionedBase = $"{ApiBase}/sys/rest/v{{version:apiVersion}}";
+
+            /// <summary>
+            /// Sys module controller route with versioning.
+            /// Example: api/sys/rest/v1.0/{controller}
+            /// </summary>
+            public const string ControllerRoute = $"{ModuleVersionedBase}/{{controller}}";
+        }
+    }
+
+    // ========================================
+    // PATTERN 2: HARDCODED VERSION (V1, V2, etc.)
+    // ========================================
+
+    /// <summary>
+    /// Version 1 API routes (hardcoded version in path).
     /// </summary>
     public static class V1
     {
@@ -64,7 +111,7 @@ public static class ApiRoutes
 
             /// <summary>
             /// Controller route template for diagnostics area.
-            /// Example: /api/v1/diagnostics/code-quality
+            /// Example: /api/v1/diagnostics/{controller}
             /// </summary>
             public const string ControllerRoute = $"{Base}/{{controller}}";
 
@@ -138,3 +185,4 @@ public static class ApiRoutes
         // V2 areas defined here when needed...
     }
 }
+

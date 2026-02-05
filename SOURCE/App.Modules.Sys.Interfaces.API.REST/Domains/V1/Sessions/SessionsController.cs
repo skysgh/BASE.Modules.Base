@@ -1,6 +1,7 @@
 using App.Modules.Sys.Application.Domains.Sessions.Services;
 using App.Modules.Sys.Interfaces.Domains.V1.Implementations.Base;
 using App.Modules.Sys.Interfaces.Models.Session;
+//using App.Modules.Sys.Shared.Constants; // TODO: Add project reference to Shared
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,11 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Sessions
     /// </summary>
     /// <remarks>
     /// Endpoints:
-    /// - GET /api/v1/workspaces/{workspaceId}/sessions - List sessions
-    /// - GET /api/v1/workspaces/{workspaceId}/sessions/{id} - Get session
-    /// - GET /api/v1/workspaces/{workspaceId}/sessions/{id}/operations - Get session operations
+    /// - GET /api/sys/rest/v{version:apiVersion}/sessions - List sessions
+    /// - GET /api/sys/rest/v{version:apiVersion}/sessions/{id} - Get session
+    /// - GET /api/sys/rest/v{version:apiVersion}/sessions/{id}/operations - Get session operations
     /// </remarks>
-    [Route("api/sys/rest/v{version:apiVersion}")]
+    [Route("api/sys/rest/v{version:apiVersion}/{controller}")] // TODO: Use ApiRoutes.Versioned.Sys.ControllerRoute
     public class SessionsController : SysApiControllerBase
     {
         private readonly ISessionService _sessionService;
