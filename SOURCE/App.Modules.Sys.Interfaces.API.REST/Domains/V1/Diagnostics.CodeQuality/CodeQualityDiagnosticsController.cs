@@ -1,10 +1,10 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Models;
 using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Services;
-using App.Modules.Sys.Shared.Constants;
+//using App.Modules.Sys.Shared.Constants; // TODO: Add project reference to Shared
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
-using System.Threading.Task;
+using System.Threading.Tasks;
 
 namespace App.Modules.Sys.Interfaces.API.REST.Domains.V1.Diagnostics;
 
@@ -26,7 +26,7 @@ namespace App.Modules.Sys.Interfaces.API.REST.Domains.V1.Diagnostics;
 /// - GET /api/v1/diagnostics/code-quality/capabilities - Get analyzer info
 /// </remarks>
 [ApiController]
-[Route(ApiRoutes.V1.Diagnostics.CodeQuality)]
+[Route("api/v1/diagnostics/code-quality")] // TODO: Use ApiRoutes.V1.Diagnostics.CodeQuality when project reference added
 #if DEBUG
 [AllowAnonymous] // Development: No auth required for diagnostics
 #else

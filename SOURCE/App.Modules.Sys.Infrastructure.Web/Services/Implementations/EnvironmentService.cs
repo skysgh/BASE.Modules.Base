@@ -1,7 +1,11 @@
 using App.Modules.Sys.Infrastructure.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace App.Modules.Sys.Infrastructure.Web.Services.Implementations;
 
@@ -18,10 +22,14 @@ namespace App.Modules.Sys.Infrastructure.Web.Services.Implementations;
 public sealed class EnvironmentService : IEnvironmentService
 {
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IConfiguration _configuration;
 
-    public EnvironmentService(IWebHostEnvironment webHostEnvironment)
+    public EnvironmentService(
+        IWebHostEnvironment webHostEnvironment,
+        IConfiguration configuration)
     {
         _webHostEnvironment = webHostEnvironment ?? throw new ArgumentNullException(nameof(webHostEnvironment));
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
     // ========================================
@@ -36,34 +44,6 @@ public sealed class EnvironmentService : IEnvironmentService
 
     public bool IsProduction => _webHostEnvironment.IsProduction();
 
-    public string ApplicationName => _webHostEnvironment.ApplicationName;
-
-    // ========================================
-    // FILE SYSTEM PATHS
-    // ========================================
-
-    public string ContentRootPath => _webHostEnvironment.ContentRootPath;
-
-    // ✅ REAL WebRootPath (not computed) - from IWebHostEnvironment
-    public string WebRootPath => _webHostEnvironment.WebRootPath;
-
-    public string GetAbsolutePath(string relativePath)
-    {
-        if (string.IsNullOrWhiteSpace(relativePath))
-        {
-            throw new ArgumentException("Relative path cannot be null or whitespace", nameof(relativePath));
-        }
-
-        // Remove leading slash if present
-        relativePath = relativePath.TrimStart('/', '\\');
-
-        return Path.Combine(ContentRootPath, relativePath);
-    }
-
-    // ========================================
-    // ENVIRONMENT CHECKS
-    // ========================================
-
     public bool IsEnvironment(string environmentName)
     {
         if (string.IsNullOrWhiteSpace(environmentName))
@@ -75,66 +55,109 @@ public sealed class EnvironmentService : IEnvironmentService
     }
 
     // ========================================
-    // FEATURE FLAGS
+    // APPLICATION PATHS
     // ========================================
 
-    public bool IsFeatureEnabled(string featureName)
-    {
-        if (string.IsNullOrWhiteSpace(featureName))
-        {
-            throw new ArgumentException("Feature name cannot be null or whitespace", nameof(featureName));
-        }
+    public string ContentRootPath => _webHostEnvironment.ContentRootPath;
 
-        // In development, most features are enabled by default
-        if (IsDevelopment)
-        {
-            return true;
-        }
-
-        // In production, check environment variables or configuration
-        var envVarName = $"FEATURE_{featureName.ToUpperInvariant().Replace('.', '_')}";
-        var envValue = Environment.GetEnvironmentVariable(envVarName);
-
-        return !string.IsNullOrEmpty(envValue) && 
-               (envValue.Equals("true", StringComparison.OrdinalIgnoreCase) ||
-                envValue.Equals("1", StringComparison.OrdinalIgnoreCase) ||
-                envValue.Equals("enabled", StringComparison.OrdinalIgnoreCase));
-    }
-
-    public bool ShouldExposeDetailedErrors()
-    {
-        // Only expose detailed errors in development
-        return IsDevelopment;
-    }
-
-    public bool ShouldEnableSwagger()
-    {
-        // Swagger in development and staging, not in production
-        return IsDevelopment || IsStaging;
-    }
+    public string? WebRootPath => _webHostEnvironment.WebRootPath;
 
     // ========================================
     // CONFIGURATION
     // ========================================
 
-    public string GetEnvironmentVariable(string key)
+    public IConfiguration Configuration => _configuration;
+
+    public string? GetConfigurationValue(string key)
     {
         if (string.IsNullOrWhiteSpace(key))
         {
             throw new ArgumentException("Key cannot be null or whitespace", nameof(key));
         }
 
-        return Environment.GetEnvironmentVariable(key) ?? string.Empty;
+        return _configuration[key];
     }
 
-    public string GetEnvironmentVariableOrDefault(string key, string defaultValue)
+    public T? GetConfigurationSection<T>(string sectionKey) where T : class, new()
     {
-        if (string.IsNullOrWhiteSpace(key))
+        if (string.IsNullOrWhiteSpace(sectionKey))
         {
-            throw new ArgumentException("Key cannot be null or whitespace", nameof(key));
+            throw new ArgumentException("Section key cannot be null or whitespace", nameof(sectionKey));
         }
 
-        var value = Environment.GetEnvironmentVariable(key);
-        return string.IsNullOrEmpty(value) ? defaultValue : value;
+        var section = _configuration.GetSection(sectionKey);
+        if (!section.Exists())
+        {
+            return null;
+        }
+
+        var instance = new T();
+        section.Bind(instance);
+        return instance;
+    }
+
+    // ========================================
+    // RUNTIME INFORMATION
+    // ========================================
+
+    public string RuntimeVersion => RuntimeInformation.FrameworkDescription;
+
+    public string OperatingSystem
+    {
+        get
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "Windows";
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return "Linux";
+            }
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return "macOS";
+            }
+            return "Unknown";
+        }
+    }
+
+    public string ApplicationName => _webHostEnvironment.ApplicationName;
+
+    public string ApplicationVersion
+    {
+        get
+        {
+            var assembly = Assembly.GetEntryAssembly();
+            var version = assembly?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+                         ?? assembly?.GetName().Version?.ToString()
+                         ?? "1.0.0";
+            return version;
+        }
+    }
+
+    // ========================================
+    // FEATURE FLAGS
+    // ========================================
+
+    public bool ShowDetailedErrors => IsDevelopment;
+
+    public bool EnableSwagger => IsDevelopment || IsStaging;
+
+    public bool EnableAutoMigrations
+    {
+        get
+        {
+            // Check configuration first
+            var configValue = _configuration["Features:EnableAutoMigrations"];
+            if (bool.TryParse(configValue, out var enabled))
+            {
+                return enabled;
+            }
+
+            // Default: enabled in development only
+            return IsDevelopment;
+        }
     }
 }
+
