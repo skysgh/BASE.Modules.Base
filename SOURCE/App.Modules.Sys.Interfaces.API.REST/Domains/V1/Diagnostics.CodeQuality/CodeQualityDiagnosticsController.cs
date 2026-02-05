@@ -15,6 +15,10 @@ namespace App.Modules.Sys.Interfaces.API.REST.Domains.V1.Diagnostics;
 /// Available in Development/Staging only.
 /// Production returns disabled status.
 /// 
+/// Authorization:
+/// - Development: Anonymous access allowed
+/// - Staging/Production: Requires authentication
+/// 
 /// Endpoints:
 /// - GET /api/v1/diagnostics/code-quality - Get cached analysis results
 /// - POST /api/v1/diagnostics/code-quality/scan - Trigger new scan
@@ -22,12 +26,20 @@ namespace App.Modules.Sys.Interfaces.API.REST.Domains.V1.Diagnostics;
 /// </remarks>
 [ApiController]
 [Route("api/v1/diagnostics/code-quality")]
-[Authorize] // TODO: Configure authorization for diagnostics
-[Produces("application/json")]
+#if DEBUG
+[AllowAnonymous] // Development: No auth required for diagnostics
+#else
+[Authorize] // Production: Require authentication
+#endif
 public class CodeQualityDiagnosticsController : ControllerBase
 {
     private readonly ICodeQualityAnalysisService _codeQualityAnalysisService;
 
+/// <summary>
+/// Constructor
+/// </summary>
+/// <param name="codeQualityAnalysisService"></param>
+/// <exception cref="System.ArgumentNullException"></exception>
     public CodeQualityDiagnosticsController(ICodeQualityAnalysisService codeQualityAnalysisService)
     {
         _codeQualityAnalysisService = codeQualityAnalysisService 

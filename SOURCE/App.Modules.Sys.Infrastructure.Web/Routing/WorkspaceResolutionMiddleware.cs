@@ -33,6 +33,16 @@ namespace App.Modules.Sys.Infrastructure.Web.Routing
             HttpContext context,
             IWorkspaceValidationService? workspaceValidator = null)
         {
+            // SKIP workspace resolution for system/diagnostic paths
+            var path = context.Request.Path.Value?.ToLowerInvariant() ?? "";
+            
+            if (ShouldSkipWorkspaceResolution(path))
+            {
+                _logger.LogDebug($"Skipping workspace resolution for system path: {path}");
+                await _next(context);
+                return;
+            }
+            
             var workspace = await ResolveWorkspaceAsync(context, workspaceValidator);
             
             context.Items[ContextKeys.WorkspaceId] = workspace;
@@ -41,6 +51,33 @@ namespace App.Modules.Sys.Infrastructure.Web.Routing
             _logger.LogDebug($"Resolved workspace: {workspace}");
 
             await _next(context);
+        }
+
+        /// <summary>
+        /// Check if request should skip workspace resolution.
+        /// System paths like diagnostics, swagger, health checks don't need workspaces.
+        /// </summary>
+        private bool ShouldSkipWorkspaceResolution(string path)
+        {
+            // Swagger and OpenAPI
+            if (path.StartsWith("/swagger")) return true;
+            if (path.Contains("/swagger.json")) return true;
+            
+            // Diagnostics endpoints
+            if (path.StartsWith("/api/v1/diagnostics")) return true;
+            
+            // Health checks
+            if (path.StartsWith("/health")) return true;
+            if (path.StartsWith("/api/health")) return true;
+            
+            // Development tools
+            if (path.StartsWith("/_framework")) return true;
+            if (path.StartsWith("/_vs")) return true;
+            
+            // System endpoints that don't need workspaces
+            if (path.StartsWith("/api/v1/system")) return true;
+            
+            return false;
         }
 
         /// <summary>
