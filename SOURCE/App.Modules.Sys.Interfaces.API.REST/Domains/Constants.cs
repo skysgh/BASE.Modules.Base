@@ -2,267 +2,275 @@ namespace App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 
 /// <summary>
 /// API route constants for consistent route building.
-/// Uses base paths with {controller} templates for flexibility.
+/// Organized by: {root}/{api-type}/{module}/{version}/{path}
 /// </summary>
 /// <remarks>
-/// Philosophy: Balance between type-safety and flexibility.
-/// - Base paths are constants (prevents typos, enables refactoring)
-/// - Controller names use {controller} template (automatic, rename-safe)
+/// Hierarchy:
+/// - API Root (api)
+///   - API Type (rest, odata, graphql)
+///     - Module (sys, core, accounts)
+///       - Version (v1, v2)
+///         - Path (controller template or explicit)
 /// 
-/// Two patterns supported:
-/// 1. Hardcoded version: api/v1/{controller}
-/// 2. API versioning attribute: api/rest/v{version:apiVersion}/{controller}
-/// 
-/// Usage:
-/// [Route(ApiRoutes.V1.ControllerRoute)]           // Hardcoded v1
-/// [Route(ApiRoutes.Versioned.ControllerRoute)]    // Attribute-based versioning
+/// Example: api/rest/sys/v1/diagnostics/code-quality
 /// 
 /// Benefits:
-/// - ✅ Single source of truth for base paths
-/// - ✅ Easy version changes (V1 → V2)
-/// - ✅ Controller names derived automatically
-/// - ✅ Less maintenance than full explicit routes
+/// - ✅ Clear hierarchy
+/// - ✅ Easy to add new modules
+/// - ✅ Easy to add new API types (OData, GraphQL)
+/// - ✅ Consistent versioning per module
 /// </remarks>
 public static class ApiRoutes
 {
     /// <summary>
-    /// API base prefix (no version, no module).
+    /// API root prefix.
     /// Value: "api"
     /// </summary>
-    public const string ApiBase = "api";
+    public const string Root = "api";
 
     // ========================================
-    // PATTERN 1: API VERSIONING ATTRIBUTE
+    // API TYPES
     // ========================================
 
     /// <summary>
-    /// API routes using [ApiVersion] attribute for versioning.
-    /// Use with [ApiVersion("1.0")] on controller.
+    /// REST API routes (api/rest).
+    /// Standard RESTful HTTP APIs.
     /// </summary>
-    public static class Versioned
+    public static class Rest
     {
         /// <summary>
-        /// Base path for versioned APIs: api/rest/v{version:apiVersion}
-        /// Version determined by [ApiVersion] attribute on controller.
+        /// REST API base path.
+        /// Value: "api/rest"
         /// </summary>
-        public const string VersionedBase = $"{ApiBase}/rest/v{{version:apiVersion}}";
+        public const string Base = $"{Root}/rest";
 
         /// <summary>
-        /// Standard controller route template with API versioning.
-        /// Example: api/rest/v1.0/{controller}
-        /// </summary>
-        public const string ControllerRoute = $"{VersionedBase}/{{controller}}";
-
-        /// <summary>
-        /// Module-specific versioned routes (Sys module).
+        /// Sys module REST APIs (api/rest/sys).
+        /// System infrastructure, diagnostics, and configuration.
         /// </summary>
         public static class Sys
         {
             /// <summary>
-            /// Sys module base: api/sys/rest/v{version:apiVersion}
+            /// Sys module base path.
+            /// Value: "api/rest/sys"
             /// </summary>
-            public const string ModuleVersionedBase = $"{ApiBase}/sys/rest/v{{version:apiVersion}}";
+            public const string ModuleBase = $"{Base}/sys";
 
             /// <summary>
-            /// Sys module controller route with versioning.
-            /// Example: api/sys/rest/v1.0/{controller}
+            /// Version 1 of Sys module REST APIs.
             /// </summary>
-            public const string ControllerRoute = $"{ModuleVersionedBase}/{{controller}}";
+            public static class V1
+            {
+                /// <summary>
+                /// V1 base path.
+                /// Value: "api/rest/sys/v1"
+                /// </summary>
+                public const string VersionBase = $"{ModuleBase}/v1";
+
+                /// <summary>
+                /// Standard controller route template.
+                /// Controller name derived automatically from class name.
+                /// Example: api/rest/sys/v1/{controller}
+                /// </summary>
+                public const string ControllerRoute = $"{VersionBase}/{{controller}}";
+
+                // ========================================
+                // DIAGNOSTICS
+                // ========================================
+
+                /// <summary>
+                /// Diagnostics endpoints (api/rest/sys/v1/diagnostics).
+                /// </summary>
+                public static class Diagnostics
+                {
+                    /// <summary>
+                    /// Diagnostics base path.
+                    /// Value: "api/rest/sys/v1/diagnostics"
+                    /// </summary>
+                    public const string Base = $"{VersionBase}/diagnostics";
+
+                    /// <summary>
+                    /// Code quality diagnostics endpoint.
+                    /// Value: "api/rest/sys/v1/diagnostics/code-quality"
+                    /// </summary>
+                    public const string CodeQuality = $"{Base}/code-quality";
+
+                    /// <summary>
+                    /// Startup diagnostics endpoint.
+                    /// Value: "api/rest/sys/v1/diagnostics/startup"
+                    /// </summary>
+                    public const string Startup = $"{Base}/startup";
+                }
+
+                // ========================================
+                // SETTINGS
+                // ========================================
+
+                /// <summary>
+                /// Settings endpoints (api/rest/sys/v1/settings).
+                /// </summary>
+                public static class Settings
+                {
+                    /// <summary>
+                    /// Settings base path.
+                    /// Value: "api/rest/sys/v1/settings"
+                    /// </summary>
+                    public const string Base = $"{VersionBase}/settings";
+
+                    /// <summary>
+                    /// Effective (resolved) settings endpoint.
+                    /// Returns merged settings (User → Workspace → System).
+                    /// Value: "api/rest/sys/v1/settings/effective"
+                    /// </summary>
+                    public const string Effective = $"{Base}/effective";
+
+                    /// <summary>
+                    /// System-level settings endpoint.
+                    /// Requires system administrator permissions.
+                    /// Value: "api/rest/sys/v1/settings/system"
+                    /// </summary>
+                    public const string System = $"{Base}/system";
+
+                    /// <summary>
+                    /// Workspace-level settings endpoint.
+                    /// Requires workspace administrator permissions.
+                    /// Value: "api/rest/sys/v1/settings/workspace"
+                    /// </summary>
+                    public const string Workspace = $"{Base}/workspace";
+
+                    /// <summary>
+                    /// User-level settings endpoint.
+                    /// User's personal preference overrides.
+                    /// Value: "api/rest/sys/v1/settings/user"
+                    /// </summary>
+                    public const string User = $"{Base}/user";
+                }
+
+                // ========================================
+                // REFERENCE DATA
+                // ========================================
+
+                /// <summary>
+                /// Reference data endpoints (api/rest/sys/v1/reference-data).
+                /// </summary>
+                public static class ReferenceData
+                {
+                    /// <summary>
+                    /// Reference data base path.
+                    /// Value: "api/rest/sys/v1/reference-data"
+                    /// </summary>
+                    public const string Base = $"{VersionBase}/reference-data";
+
+                    /// <summary>
+                    /// System languages reference data endpoint.
+                    /// Returns available UI languages.
+                    /// Value: "api/rest/sys/v1/reference-data/system-languages"
+                    /// </summary>
+                    public const string SystemLanguages = $"{Base}/system-languages";
+                }
+
+                // ========================================
+                // HEALTH
+                // ========================================
+
+                /// <summary>
+                /// Health check endpoints (api/rest/sys/v1/health).
+                /// Used for monitoring, load balancer health checks, and readiness probes.
+                /// </summary>
+                public static class Health
+                {
+                    /// <summary>
+                    /// Health check base path.
+                    /// Value: "api/rest/sys/v1/health"
+                    /// </summary>
+                    public const string Base = $"{VersionBase}/health";
+
+                    /// <summary>
+                    /// Liveness probe endpoint.
+                    /// Returns 200 if application process is running.
+                    /// Value: "api/rest/sys/v1/health/live"
+                    /// </summary>
+                    public const string Live = $"{Base}/live";
+
+                    /// <summary>
+                    /// Readiness probe endpoint.
+                    /// Returns 200 if application is ready to serve traffic.
+                    /// Value: "api/rest/sys/v1/health/ready"
+                    /// </summary>
+                    public const string Ready = $"{Base}/ready";
+
+                    /// <summary>
+                    /// Startup probe endpoint.
+                    /// Returns 200 if application has completed initialization.
+                    /// Value: "api/rest/sys/v1/health/startup"
+                    /// </summary>
+                    public const string Startup = $"{Base}/startup";
+                }
+            }
+
+            /// <summary>
+            /// Version 2 of Sys module REST APIs (future).
+            /// </summary>
+            public static class V2
+            {
+                /// <summary>
+                /// V2 base path.
+                /// Value: "api/rest/sys/v2"
+                /// </summary>
+                public const string VersionBase = $"{ModuleBase}/v2";
+
+                /// <summary>
+                /// Standard controller route template for V2.
+                /// Example: api/rest/sys/v2/{controller}
+                /// </summary>
+                public const string ControllerRoute = $"{VersionBase}/{{controller}}";
+
+                // V2 areas defined here when needed...
+            }
         }
+
+        // ========================================
+        // OTHER MODULES (when needed)
+        // ========================================
+
+        // public static class Core { ... }
+        // public static class Accounts { ... }
     }
 
     // ========================================
-    // PATTERN 2: HARDCODED VERSION (V1, V2, etc.)
+    // OTHER API TYPES (when needed)
     // ========================================
 
     /// <summary>
-    /// Version 1 API routes (hardcoded version in path).
+    /// OData API routes (api/odata).
+    /// OData query protocol for advanced filtering and querying.
     /// </summary>
-    public static class V1
+    public static class OData
     {
         /// <summary>
-        /// Version identifier.
-        /// Value: "v1"
+        /// OData API base path.
+        /// Value: "api/odata"
         /// </summary>
-        public const string Version = "v1";
+        public const string Base = $"{Root}/odata";
 
-        /// <summary>
-        /// Base path for V1 APIs (api/rest/v1).
-        /// </summary>
-        public const string VersionBase = $"{ApiBase}/rest/{Version}";
-
-        /// <summary>
-        /// Standard controller route template (api/rest/v1/{controller}).
-        /// Controller name is derived automatically.
-        /// </summary>
-        public const string ControllerRoute = $"{VersionBase}/{{controller}}";
-
-        // ========================================
-        // GROUPED ENDPOINTS (For Organized Areas)
-        // ========================================
-
-        /// <summary>
-        /// Diagnostics endpoints (api/rest/v1/diagnostics).
-        /// </summary>
-        public static class Diagnostics
-        {
-            /// <summary>
-            /// Base path for diagnostics endpoints.
-            /// Value: "api/rest/v1/diagnostics"
-            /// </summary>
-            public const string Base = $"{VersionBase}/diagnostics";
-
-            /// <summary>
-            /// Controller route template for diagnostics area.
-            /// Example: /api/rest/v1/diagnostics/{controller}
-            /// </summary>
-            public const string ControllerRoute = $"{Base}/{{controller}}";
-
-            /// <summary>
-            /// Code quality diagnostics endpoint.
-            /// Value: "api/rest/v1/diagnostics/code-quality"
-            /// </summary>
-            public const string CodeQuality = $"{Base}/code-quality";
-
-            /// <summary>
-            /// Startup diagnostics endpoint.
-            /// Value: "api/rest/v1/diagnostics/startup"
-            /// </summary>
-            public const string Startup = $"{Base}/startup";
-        }
-
-        /// <summary>
-        /// Settings endpoints (api/rest/v1/settings).
-        /// </summary>
-        public static class Settings
-        {
-            /// <summary>
-            /// Base path for settings endpoints.
-            /// Value: "api/rest/v1/settings"
-            /// </summary>
-            public const string Base = $"{VersionBase}/settings";
-
-            /// <summary>
-            /// Controller route template for settings area.
-            /// Example: /api/rest/v1/settings/{controller}
-            /// </summary>
-            public const string ControllerRoute = $"{Base}/{{controller}}";
-
-            /// <summary>
-            /// Effective (resolved) settings endpoint.
-            /// Returns merged settings (User → Workspace → System).
-            /// Value: "api/rest/v1/settings/effective"
-            /// </summary>
-            public const string Effective = $"{Base}/effective";
-
-            /// <summary>
-            /// System-level settings endpoint.
-            /// Requires system administrator permissions.
-            /// Value: "api/rest/v1/settings/system"
-            /// </summary>
-            public const string System = $"{Base}/system";
-
-            /// <summary>
-            /// Workspace-level settings endpoint.
-            /// Requires workspace administrator permissions.
-            /// Value: "api/rest/v1/settings/workspace"
-            /// </summary>
-            public const string Workspace = $"{Base}/workspace";
-
-            /// <summary>
-            /// User-level settings endpoint.
-            /// User's personal preference overrides.
-            /// Value: "api/rest/v1/settings/user"
-            /// </summary>
-            public const string User = $"{Base}/user";
-        }
-
-        /// <summary>
-        /// Reference data endpoints (api/rest/v1/reference-data).
-        /// </summary>
-        public static class ReferenceData
-        {
-            /// <summary>
-            /// Base path for reference data endpoints.
-            /// Value: "api/rest/v1/reference-data"
-            /// </summary>
-            public const string Base = $"{VersionBase}/reference-data";
-
-            /// <summary>
-            /// Controller route template for reference data area.
-            /// Example: /api/rest/v1/reference-data/{controller}
-            /// </summary>
-            public const string ControllerRoute = $"{Base}/{{controller}}";
-
-            /// <summary>
-            /// System languages reference data endpoint.
-            /// Returns available UI languages.
-            /// Value: "api/rest/v1/reference-data/system-languages"
-            /// </summary>
-            public const string SystemLanguages = $"{Base}/system-languages";
-        }
-
-        /// <summary>
-        /// Health check endpoints (api/rest/v1/health).
-        /// Used for monitoring, load balancer health checks, and readiness probes.
-        /// </summary>
-        public static class Health
-        {
-            /// <summary>
-            /// Base path for health check endpoints.
-            /// Value: "api/rest/v1/health"
-            /// </summary>
-            public const string Base = $"{VersionBase}/health";
-
-            /// <summary>
-            /// Liveness probe endpoint.
-            /// Returns 200 if application process is running.
-            /// Value: "api/rest/v1/health/live"
-            /// </summary>
-            public const string Live = $"{Base}/live";
-
-            /// <summary>
-            /// Readiness probe endpoint.
-            /// Returns 200 if application is ready to serve traffic.
-            /// Value: "api/rest/v1/health/ready"
-            /// </summary>
-            public const string Ready = $"{Base}/ready";
-
-            /// <summary>
-            /// Startup probe endpoint.
-            /// Returns 200 if application has completed initialization.
-            /// Value: "api/rest/v1/health/startup"
-            /// </summary>
-            public const string Startup = $"{Base}/startup";
-        }
+        // public static class Sys { ... }
     }
 
     /// <summary>
-    /// Version 2 API routes (future).
-    /// Placeholder for next API version.
+    /// GraphQL API routes (api/graphql).
+    /// GraphQL query endpoint.
     /// </summary>
-    public static class V2
+    public static class GraphQL
     {
         /// <summary>
-        /// Version identifier for V2.
-        /// Value: "v2"
+        /// GraphQL API base path.
+        /// Value: "api/graphql"
         /// </summary>
-        public const string Version = "v2";
+        public const string Base = $"{Root}/graphql";
 
-        /// <summary>
-        /// Base path for V2 APIs.
-        /// Value: "api/rest/v2"
-        /// </summary>
-        public const string VersionBase = $"{ApiBase}/rest/{Version}";
-
-        /// <summary>
-        /// Standard controller route template for V2.
-        /// Example: api/rest/v2/{controller}
-        /// </summary>
-        public const string ControllerRoute = $"{VersionBase}/{{controller}}";
-
-        // V2 areas defined here when needed...
+        // public static class Sys { ... }
     }
 }
+
 
 

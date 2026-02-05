@@ -16,11 +16,11 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Sessions
     /// </summary>
     /// <remarks>
     /// Endpoints:
-    /// - GET /api/sys/rest/v{version:apiVersion}/sessions - List sessions
-    /// - GET /api/sys/rest/v{version:apiVersion}/sessions/{id} - Get session
-    /// - GET /api/sys/rest/v{version:apiVersion}/sessions/{id}/operations - Get session operations
+    /// - GET /api/rest/sys/v1/sessions - List sessions
+    /// - GET /api/rest/sys/v1/sessions/{id} - Get session
+    /// - GET /api/rest/sys/v1/sessions/{id}/operations - Get session operations
     /// </remarks>
-    [Route(ApiRoutes.Versioned.Sys.ControllerRoute)]
+    [Route(ApiRoutes.Rest.Sys.V1.ControllerRoute)]
     public class SessionsController : SysApiControllerBase
     {
         private readonly ISessionService _sessionService;

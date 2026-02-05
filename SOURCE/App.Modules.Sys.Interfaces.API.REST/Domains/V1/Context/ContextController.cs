@@ -15,7 +15,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Context;
 /// This endpoint replaces multiple frontend API calls with a single aggregated response.
 /// Supports both authenticated and anonymous users.
 /// </remarks>
-[Route(ApiRoutes.Versioned.Sys.ControllerRoute)]
+[Route(ApiRoutes.Rest.Sys.V1.ControllerRoute)]
 [AllowAnonymous] // Allow anonymous access - returns limited context for anonymous users
 public class ContextController : SysApiControllerBase
 {
