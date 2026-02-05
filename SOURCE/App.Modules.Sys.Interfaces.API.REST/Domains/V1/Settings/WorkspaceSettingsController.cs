@@ -21,7 +21,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Settings;
 /// - Can be locked to prevent user overrides
 /// - Cannot override system-locked settings
 /// </remarks>
-[Route(ApiRoutes.Rest.Sys.V1.Settings.Workspace)]
+[Route(ApiRoutes.Rest.V1.Settings.Workspace)]
 [Authorize(Roles = "WorkspaceAdministrator")]
 public class WorkspaceSettingsController : ControllerBase
 {

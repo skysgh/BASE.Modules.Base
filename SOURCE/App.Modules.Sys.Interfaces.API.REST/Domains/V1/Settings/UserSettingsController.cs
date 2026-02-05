@@ -21,7 +21,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Settings;
 /// - Cannot override workspace-locked or system-locked settings
 /// - Scoped to current workspace (different per workspace)
 /// </remarks>
-[Route(ApiRoutes.Rest.Sys.V1.Settings.User)]
+[Route(ApiRoutes.Rest.V1.Settings.User)]
 [Authorize]
 public class UserSettingsController : ControllerBase
 {

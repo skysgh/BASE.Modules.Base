@@ -21,7 +21,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Settings;
 /// - WorkspaceSettingsController (workspace admin)
 /// - SystemSettingsController (system admin)
 /// </remarks>
-[Route(ApiRoutes.Rest.Sys.V1.ControllerRoute)]
+[Route(ApiRoutes.Rest.V1.ControllerRoute)]
 [Authorize]
 public class EffectiveSettingsController : ControllerBase
 {

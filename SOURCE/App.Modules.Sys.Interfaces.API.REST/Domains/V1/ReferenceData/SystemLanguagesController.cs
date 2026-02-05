@@ -16,7 +16,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.ReferenceData;
 /// System Languages API - Available UI languages for internationalization.
 /// Provides read-only access to system language reference data.
 /// </summary>
-[Route(ApiRoutes.Rest.Sys.V1.ReferenceData.Languages)]
+[Route(ApiRoutes.Rest.V1.ReferenceData.Languages)]
 [Authorize]
 public class SystemLanguagesController : ControllerBase
 {

@@ -20,7 +20,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Sessions
     /// - GET /api/rest/sys/v1/sessions/{id} - Get session
     /// - GET /api/rest/sys/v1/sessions/{id}/operations - Get session operations
     /// </remarks>
-    [Route(ApiRoutes.Rest.Sys.V1.ControllerRoute)]
+    [Route(ApiRoutes.Rest.V1.ControllerRoute)]
     public class SessionsController : SysApiControllerBase
     {
         private readonly ISessionService _sessionService;

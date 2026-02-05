@@ -26,7 +26,7 @@ namespace App.Modules.Sys.Interfaces.API.REST.Domains.V1.Diagnostics;
 /// - GET /api/v1/diagnostics/code-quality/capabilities - Get analyzer info
 /// </remarks>
 [ApiController]
-[Route(ApiRoutes.Rest.Sys.V1.Diagnostics.CodeQuality)]
+[Route(ApiRoutes.Rest.V1.Diagnostics.CodeQuality)]
 #if DEBUG
 [AllowAnonymous] // Development: No auth required for diagnostics
 #else

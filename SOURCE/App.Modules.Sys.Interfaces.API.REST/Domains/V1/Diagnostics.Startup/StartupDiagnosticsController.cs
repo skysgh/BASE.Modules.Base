@@ -12,7 +12,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Diagnostics.Startup;
 /// Provides visibility into module loading, service registration, database initialization.
 /// Uses Application layer facade service (returns DTOs, not domain objects).
 /// </summary>
-[Route(ApiRoutes.Rest.Sys.V1.Diagnostics.Startup)]
+[Route(ApiRoutes.Rest.V1.Diagnostics.Startup)]
 [Authorize] // Secure by default - only authenticated users
 public class StartupDiagnosticsController : ControllerBase
 {

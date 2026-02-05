@@ -14,7 +14,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Permissions
     /// Thin HTTP adapter - delegates to ISystemPermissionService.
     /// Read-only - permissions are defined in code (ReferenceDataSeeder).
     /// </summary>
-    [Route(ApiRoutes.Rest.Sys.V1.ControllerRoute)]
+    [Route(ApiRoutes.Rest.V1.ControllerRoute)]
     public class SystemPermissionsController : SysApiControllerBase
     {
         private readonly ISystemPermissionService _permissionService;

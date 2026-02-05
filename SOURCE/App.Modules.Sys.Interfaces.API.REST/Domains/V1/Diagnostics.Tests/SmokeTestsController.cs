@@ -12,7 +12,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Diagnostics.Tests;
 /// Provides visibility into infrastructure readiness and data integrity.
 /// Uses Application layer facade service (returns DTOs, not domain objects).
 /// </summary>
-[Route(ApiRoutes.Rest.Sys.V1.Diagnostics.SmokeTests)]
+[Route(ApiRoutes.Rest.V1.Diagnostics.SmokeTests)]
 [Authorize] // Secure by default
 public class SmokeTestsController : ControllerBase
 {

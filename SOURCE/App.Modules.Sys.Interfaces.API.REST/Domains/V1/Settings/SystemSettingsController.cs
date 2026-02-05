@@ -20,7 +20,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Settings;
 /// - Can be locked to prevent workspace/user overrides
 /// - Changes affect all users unless overridden at workspace/user level
 /// </remarks>
-[Route(ApiRoutes.Rest.Sys.V1.Settings.System)]
+[Route(ApiRoutes.Rest.V1.Settings.System)]
 [Authorize(Roles = "SystemAdministrator")]
 public class SystemSettingsController : ControllerBase
 {
