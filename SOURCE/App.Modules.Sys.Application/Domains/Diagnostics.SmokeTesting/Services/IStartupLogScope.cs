@@ -1,6 +1,5 @@
-
 using App.Modules.Sys.Shared.Models.Implementations;
-namespace App.Modules.Sys.Application.Domains.Diagnotics.SmokeTesting.Services
+namespace App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services
 {
 
     /// <summary>

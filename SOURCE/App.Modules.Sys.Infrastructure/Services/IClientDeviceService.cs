@@ -1,4 +1,5 @@
 using System;
+using App.Modules.Sys.Shared.Services;
 
 namespace App.Modules.Sys.Infrastructure.Services;
 
@@ -16,7 +17,7 @@ namespace App.Modules.Sys.Infrastructure.Services;
 /// - Security (block outdated/insecure browsers)
 /// - Device-specific optimizations
 /// </remarks>
-public interface IClientDeviceService
+public interface IClientDeviceService: IHasService
 {
     // ========================================
     // DEVICE TYPE

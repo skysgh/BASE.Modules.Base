@@ -1,4 +1,5 @@
 using App.Modules.Sys.Domain.Domains.Configuration;
+using App.Modules.Sys.Infrastructure.Domains.Settings.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Infrastructure.Domains.Settings.Implementations
+namespace App.Modules.Sys.Infrastructure.Domains.Settings
 {
     /// <summary>
     /// Implementation of hierarchical settings service.

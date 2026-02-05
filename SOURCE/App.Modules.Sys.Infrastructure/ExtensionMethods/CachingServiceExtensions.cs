@@ -3,6 +3,9 @@ using App.Modules.Sys.Infrastructure.Domains.Caching.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+// Extensions are always put in root namespace
+// for maximum usability from elsewhere:
+
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace App.Modules.Sys.Infrastructure.ExtensionMethods
 #pragma warning restore IDE0130 // Namespace does not match folder structure

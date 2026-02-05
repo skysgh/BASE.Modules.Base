@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace App.Modules.Sys.Application.Settings.Models;
+namespace App.Modules.Sys.Application.Domains.Settings.Models;
 
 /// <summary>
 /// DTO for setting value with metadata.

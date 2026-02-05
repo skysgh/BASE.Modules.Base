@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using App.Modules.Sys.Infrastructure.Domains.Caching.Implementations;
 using App.Modules.Sys.Infrastructure.Domains.Settings.Implementations;
 using App.Modules.Sys.Domain.Domains.Configuration;
+using App.Modules.Sys.Infrastructure.Domains.Settings;
 
 namespace App.Modules.Sys.Infrastructure.Initialisation.Implementations
 {

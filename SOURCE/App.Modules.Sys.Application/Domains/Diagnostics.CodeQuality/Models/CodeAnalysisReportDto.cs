@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace App.Modules.Sys.Application.CodeQuality.Models;
+namespace App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Models;
 
 /// <summary>
 /// Code quality analysis report DTO.
@@ -193,3 +193,62 @@ public record CategoryBreakdownDto
     /// </summary>
     public int CodeQuality { get; init; }
 }
+
+/// <summary>
+/// Analysis capabilities DTO.
+/// Describes what the analysis service can detect.
+/// </summary>
+public record AnalysisCapabilitiesDto
+{
+    /// <summary>
+    /// Whether analysis is enabled for current environment.
+    /// </summary>
+    public bool IsEnabled { get; init; }
+
+    /// <summary>
+    /// Environment where analysis runs (Development, Staging).
+    /// </summary>
+    public string Environment { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Enabled analyzers.
+    /// </summary>
+    public List<string> EnabledAnalyzers { get; init; } = new();
+
+    /// <summary>
+    /// Rules being checked.
+    /// </summary>
+    public List<AnalysisRuleDto> Rules { get; init; } = new();
+}
+
+/// <summary>
+/// Individual analysis rule DTO.
+/// </summary>
+public record AnalysisRuleDto
+{
+    /// <summary>
+    /// Rule identifier (e.g., "NamingConvention.TypeReflecting").
+    /// </summary>
+    public string Id { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Rule name.
+    /// </summary>
+    public string Name { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Rule description.
+    /// </summary>
+    public string Description { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Rule category.
+    /// </summary>
+    public string Category { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Default severity.
+    /// </summary>
+    public string Severity { get; init; } = "Warning";
+}
+

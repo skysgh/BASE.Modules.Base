@@ -1,5 +1,5 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.Models;
-using App.Modules.Sys.Application.Domains.Diagnotics.SmokeTesting.Services;
+using App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services;
 using App.Modules.Sys.Application.Domains.Services.ObjectMapping;
 using App.Modules.Sys.Infrastructure.Services;
 using App.Modules.Sys.Shared.Models.Implementations;

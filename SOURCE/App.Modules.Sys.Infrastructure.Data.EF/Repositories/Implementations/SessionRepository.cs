@@ -1,3 +1,4 @@
+using App;
 using App.Modules.Sys.Domain.Domains.Sessions.Models;
 using App.Modules.Sys.Domain.Domains.Sessions.Repositories;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories
+namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
 {
     /// <summary>
     /// EF Core implementation of ISessionRepository.

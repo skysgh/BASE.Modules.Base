@@ -1,5 +1,5 @@
-using App.Modules.Sys.Application.Settings.Models;
-using App.Modules.Sys.Application.Settings.Services;
+using App.Modules.Sys.Application.Domains.Settings.Models;
+using App.Modules.Sys.Application.Domains.Settings.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;

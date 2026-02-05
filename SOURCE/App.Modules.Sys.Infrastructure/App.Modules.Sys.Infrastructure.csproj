@@ -30,6 +30,7 @@
     <Compile Remove="_Initialisation\Class1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CodeQuality\Services\Models\" />
     <Folder Include="Domains\Configuration\Models\Implementations\Base\" />
     <Folder Include="Domains\Configuration\Services\" />
     <Folder Include="Domains\Diagnostics.SmokeTests\" />

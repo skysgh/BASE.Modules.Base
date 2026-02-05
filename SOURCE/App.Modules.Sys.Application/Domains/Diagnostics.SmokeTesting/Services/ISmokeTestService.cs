@@ -1,7 +1,7 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.Models;
 using App.Modules.Sys.Shared.Services;
 
-namespace App.Modules.Sys.Application.Domains.Diagnotics.SmokeTesting.Services;
+namespace App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services;
 
 /// <summary>
 /// Application service for smoke tests (facade over Infrastructure registry).

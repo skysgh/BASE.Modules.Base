@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Application.Settings.Repositories;
+namespace App.Modules.Sys.Application.Domains.Settings.Repositories;
 
 /// <summary>
 /// Repository interface for hierarchical settings (System → Workspace → User).

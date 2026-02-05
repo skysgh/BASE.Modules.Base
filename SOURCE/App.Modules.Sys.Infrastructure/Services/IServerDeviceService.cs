@@ -1,4 +1,5 @@
 using System;
+using App.Modules.Sys.Shared.Services;
 
 namespace App.Modules.Sys.Infrastructure.Services;
 
@@ -16,7 +17,7 @@ namespace App.Modules.Sys.Infrastructure.Services;
 /// - Diagnostics (identify resource bottlenecks)
 /// - Load balancing decisions
 /// </remarks>
-public interface IServerDeviceService
+public interface IServerDeviceService: IHasService
 {
     // ========================================
     // SERVER IDENTIFICATION

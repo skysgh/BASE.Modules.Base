@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories
+namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
 {
     /// <summary>
     /// EF Core implementation of ISystemPermissionRepository.

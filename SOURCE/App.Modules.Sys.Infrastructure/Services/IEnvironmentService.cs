@@ -1,3 +1,4 @@
+using App.Modules.Sys.Shared.Services;
 using Microsoft.Extensions.Configuration;
 using System;
 
@@ -16,7 +17,7 @@ namespace App.Modules.Sys.Infrastructure.Services;
 /// - Logging verbosity (verbose in dev, minimal in prod)
 /// - Error detail exposure (full stack traces in dev, minimal in prod)
 /// </remarks>
-public interface IEnvironmentService
+public interface IEnvironmentService : IHasService
 {
     // ========================================
     // ENVIRONMENT IDENTIFICATION

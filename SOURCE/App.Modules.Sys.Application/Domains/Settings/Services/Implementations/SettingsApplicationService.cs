@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Context.Services;
-using App.Modules.Sys.Application.Settings.Models;
+using App.Modules.Sys.Application.Domains.Settings.Models;
+using App.Modules.Sys.Application.Domains.Settings.Services;
 using App.Modules.Sys.Domain.Settings;
 using App.Modules.Sys.Domain.Settings.Repositories;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Application.Settings.Services.Implementations;
+namespace App.Modules.Sys.Application.Domains.Settings.Services.Implementations;
 
 /// <summary>
 /// Application service implementation for hierarchical settings.

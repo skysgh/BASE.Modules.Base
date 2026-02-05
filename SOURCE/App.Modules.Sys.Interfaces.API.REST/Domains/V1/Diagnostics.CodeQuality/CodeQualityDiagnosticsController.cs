@@ -1,5 +1,5 @@
-using App.Modules.Sys.Application.CodeQuality.Models;
-using App.Modules.Sys.Application.CodeQuality.Services;
+using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Models;
+using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;

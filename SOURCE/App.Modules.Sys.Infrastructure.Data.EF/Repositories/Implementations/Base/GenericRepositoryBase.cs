@@ -3,7 +3,7 @@ using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContext
 using App.Modules.Sys.Shared.Models.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories.Base;
+namespace App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
 
 /// <summary>
 /// Generic repository base providing cross-cutting query concerns.

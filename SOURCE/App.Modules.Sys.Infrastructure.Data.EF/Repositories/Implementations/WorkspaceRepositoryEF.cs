@@ -1,11 +1,12 @@
+using App;
 using App.Modules.Sys.Domain.Domains.Workspaces.Models;
 using App.Modules.Sys.Domain.Domains.Workspaces.Repositories;
-using App.Modules.Sys.Infrastructure.Data.EF.Repositories.Base;
 using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
+using App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories;
+namespace App.Modules.Sys.Infrastructure.Repositories.Implementations;
 
 /// <summary>
 /// EF Core implementation of workspace repository.

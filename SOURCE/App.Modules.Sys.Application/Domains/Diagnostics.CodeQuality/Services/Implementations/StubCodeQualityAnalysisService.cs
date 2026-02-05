@@ -1,11 +1,11 @@
-using App.Modules.Sys.Application.CodeQuality.Models;
-using App.Modules.Sys.Application.CodeQuality.Services;
+using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Models;
+using App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Services;
 using App.Modules.Sys.Infrastructure.Services;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Application.CodeQuality.Services.Implementations;
+namespace App.Modules.Sys.Application.Domains.Diagnostics.CodeQuality.Services.Implementations;
 
 /// <summary>
 /// STUB implementation of code quality analysis service.
@@ -15,15 +15,21 @@ namespace App.Modules.Sys.Application.CodeQuality.Services.Implementations;
 /// TODO: Replace with real RoslynCodeAnalysisService from Infrastructure.Roslyn project.
 /// This stub allows endpoints to work without crashing.
 /// </remarks>
-internal sealed class StubCodeQualityAnalysisService : ICodeQualityAnalysisService
+public sealed class StubCodeQualityAnalysisService : ICodeQualityAnalysisService
 {
     private readonly IEnvironmentService _environmentService;
 
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="environmentService"></param>
     public StubCodeQualityAnalysisService(IEnvironmentService environmentService)
     {
         _environmentService = environmentService;
     }
 
+    /// <inheritdoc/>
     public Task<CodeAnalysisReportDto> AnalyzeCodebaseAsync(CancellationToken cancellationToken = default)
     {
         var stubReport = new CodeAnalysisReportDto
@@ -54,16 +60,19 @@ internal sealed class StubCodeQualityAnalysisService : ICodeQualityAnalysisServi
         return Task.FromResult(stubReport);
     }
 
+/// <inheritdoc/>
     public CodeAnalysisReportDto? GetCachedResults()
     {
         return null; // No cached results in stub
     }
 
+/// <inheritdoc/>
     public bool IsAnalysisAvailable()
     {
         return false; // Stub is never available for real analysis
     }
 
+/// <inheritdoc/>
     public AnalysisCapabilitiesDto GetCapabilities()
     {
         return new AnalysisCapabilitiesDto

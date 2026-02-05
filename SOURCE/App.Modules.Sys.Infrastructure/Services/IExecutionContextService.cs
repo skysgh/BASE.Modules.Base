@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using App.Modules.Sys.Shared.Services;
 
 namespace App.Modules.Sys.Infrastructure.Services;
 
@@ -21,7 +22,7 @@ namespace App.Modules.Sys.Infrastructure.Services;
 /// - Security (execution identity)
 /// - Tracing (distributed tracing)
 /// </remarks>
-public interface IExecutionContextService
+public interface IExecutionContextService : IHasService
 {
     // ========================================
     // EXECUTION IDENTIFICATION

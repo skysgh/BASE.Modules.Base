@@ -1,5 +1,5 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.Models;
-using App.Modules.Sys.Application.Domains.Diagnotics.SmokeTesting.Services;
+using App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;

@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Folder Include="Domains\Diagnostics.Startup\" />
+    <Folder Include="Domains\Diagnostics_X\" />
     <Folder Include="Domains\Permissions\" />
     <Folder Include="Domains\Users\Services\Implementations\" />
     <Folder Include="Domains\Workspace\Models\" />

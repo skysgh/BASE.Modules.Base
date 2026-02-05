@@ -1,10 +1,10 @@
-using App.Modules.Sys.Application.Settings.Models;
+using App.Modules.Sys.Application.Domains.Settings.Models;
 using App.Modules.Sys.Shared.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace App.Modules.Sys.Application.Settings.Services;
+namespace App.Modules.Sys.Application.Domains.Settings.Services;
 
 /// <summary>
 /// Application service for hierarchical settings (System → Workspace → User).
