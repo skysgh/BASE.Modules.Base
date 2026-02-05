@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.Models;
 using App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -11,7 +12,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Diagnostics.Tests;
 /// Provides visibility into infrastructure readiness and data integrity.
 /// Uses Application layer facade service (returns DTOs, not domain objects).
 /// </summary>
-[Route("api/sys/rest/v{version:apiVersion}/diagnostics/smoketests")]
+[Route(ApiRoutes.Rest.Sys.V1.Diagnostics.SmokeTests)]
 [Authorize] // Secure by default
 public class SmokeTestsController : ControllerBase
 {

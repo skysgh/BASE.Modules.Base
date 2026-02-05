@@ -100,6 +100,28 @@ public static class ApiRoutes
                     /// Value: "api/rest/sys/v1/diagnostics/startup"
                     /// </summary>
                     public const string Startup = $"{Base}/startup";
+
+                    /// <summary>
+                    /// Smoke tests diagnostics endpoint.
+                    /// Value: "api/rest/sys/v1/diagnostics/smoketests"
+                    /// </summary>
+                    public const string SmokeTests = $"{Base}/smoketests";
+                }
+
+                // ========================================
+                // PERMISSIONS
+                // ========================================
+
+                /// <summary>
+                /// Permissions endpoints (api/rest/sys/v1/permissions).
+                /// </summary>
+                public static class Permissions
+                {
+                    /// <summary>
+                    /// Permissions base path.
+                    /// Value: "api/rest/sys/v1/permissions"
+                    /// </summary>
+                    public const string Base = $"{VersionBase}/permissions";
                 }
 
                 // ========================================
@@ -151,22 +173,22 @@ public static class ApiRoutes
                 // ========================================
 
                 /// <summary>
-                /// Reference data endpoints (api/rest/sys/v1/reference-data).
+                /// Reference data endpoints (api/rest/sys/v1/refdata).
                 /// </summary>
                 public static class ReferenceData
                 {
                     /// <summary>
                     /// Reference data base path.
-                    /// Value: "api/rest/sys/v1/reference-data"
+                    /// Value: "api/rest/sys/v1/refdata"
                     /// </summary>
-                    public const string Base = $"{VersionBase}/reference-data";
+                    public const string Base = $"{VersionBase}/refdata";
 
                     /// <summary>
                     /// System languages reference data endpoint.
                     /// Returns available UI languages.
-                    /// Value: "api/rest/sys/v1/reference-data/system-languages"
+                    /// Value: "api/rest/sys/v1/refdata/languages"
                     /// </summary>
-                    public const string SystemLanguages = $"{Base}/system-languages";
+                    public const string Languages = $"{Base}/languages";
                 }
 
                 // ========================================

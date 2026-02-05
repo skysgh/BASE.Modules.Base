@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.ReferenceData.Models;
 using App.Modules.Sys.Application.ReferenceData.Services;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -8,13 +9,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace App.Modules.Sys.Interfaces.Domains.V1.ReferenceData;
 
 /// <summary>
 /// System Languages API - Available UI languages for internationalization.
 /// Provides read-only access to system language reference data.
 /// </summary>
-[Route("api/sys/rest/v{version:apiVersion}/refdata/languages")]
+[Route(ApiRoutes.Rest.Sys.V1.ReferenceData.Languages)]
 [Authorize]
 public class SystemLanguagesController : ControllerBase
 {

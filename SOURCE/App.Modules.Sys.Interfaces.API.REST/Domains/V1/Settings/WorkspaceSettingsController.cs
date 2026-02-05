@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Settings.Models;
 using App.Modules.Sys.Application.Domains.Settings.Services;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -20,7 +21,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Settings;
 /// - Can be locked to prevent user overrides
 /// - Cannot override system-locked settings
 /// </remarks>
-[Route("api/sys/rest/v{version:apiVersion}/settings/workspace")]
+[Route(ApiRoutes.Rest.Sys.V1.Settings.Workspace)]
 [Authorize(Roles = "WorkspaceAdministrator")]
 public class WorkspaceSettingsController : ControllerBase
 {

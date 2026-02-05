@@ -1,4 +1,5 @@
 using App.Modules.Sys.Application.Domains.Authorization.Services;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using App.Modules.Sys.Interfaces.Domains.V1.Implementations.Base;
 using App.Modules.Sys.Interfaces.Models.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Permissions
     /// Thin HTTP adapter - delegates to ISystemPermissionService.
     /// Read-only - permissions are defined in code (ReferenceDataSeeder).
     /// </summary>
-    [Route("api/sys/rest/v{version:apiVersion}")]
+    [Route(ApiRoutes.Rest.Sys.V1.ControllerRoute)]
     public class SystemPermissionsController : SysApiControllerBase
     {
         private readonly ISystemPermissionService _permissionService;

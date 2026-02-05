@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.Models;
 using App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using App.Modules.Sys.Interfaces.Domains.V1.Diagnostics.Startup.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Diagnostics.Startup;
 /// Provides visibility into module loading, service registration, database initialization.
 /// Uses Application layer facade service (returns DTOs, not domain objects).
 /// </summary>
-[Route("api/sys/rest/v{version:apiVersion}/diagnostics/startup")]
+[Route(ApiRoutes.Rest.Sys.V1.Diagnostics.Startup)]
 [Authorize] // Secure by default - only authenticated users
 public class StartupDiagnosticsController : ControllerBase
 {

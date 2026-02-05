@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Settings.Models;
 using App.Modules.Sys.Application.Domains.Settings.Services;
+using App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -19,7 +20,7 @@ namespace App.Modules.Sys.Interfaces.Domains.V1.Settings;
 /// - Can be locked to prevent workspace/user overrides
 /// - Changes affect all users unless overridden at workspace/user level
 /// </remarks>
-[Route("api/sys/rest/v{version:apiVersion}/settings/system")]
+[Route(ApiRoutes.Rest.Sys.V1.Settings.System)]
 [Authorize(Roles = "SystemAdministrator")]
 public class SystemSettingsController : ControllerBase
 {
