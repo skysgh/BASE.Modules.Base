@@ -1,3 +1,4 @@
+using App.Modules.Sys.Infrastructure.Domains.Constants;
 using App.Modules.Sys.Substrate.Infrastructure.Constants;
 
 namespace App.Modules.Sys.Interfaces.API.REST.Domains.Constants;
@@ -32,7 +33,7 @@ public static class ApiRoutes
     /// Sys module identifier.
     /// Value: "sys"
     /// </summary>
-    private const string ModuleId = "sys";
+    private const string ModuleId = ModuleConstants.Key;
 
     // Build module base inline (const-compatible)
     private const string RestModuleBase = $"{ApiConstants.Root}/{ApiConstants.RestType}/{ModuleId}";
