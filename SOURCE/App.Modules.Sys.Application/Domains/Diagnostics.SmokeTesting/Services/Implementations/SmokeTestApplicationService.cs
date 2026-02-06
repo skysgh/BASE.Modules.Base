@@ -1,11 +1,10 @@
 using App.Modules.Sys.Application.Domains.Diagnostics.Models;
-using App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services;
 using App.Modules.Sys.Application.Domains.Services.ObjectMapping;
 using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
 using App.Modules.Sys.Infrastructure.Domains.Diagnostics.Implementations;
 using App.Modules.Sys.Infrastructure.Services;
 
-namespace App.Modules.Sys.Application.Domains.Diagnostics.Services.Implementations;
+namespace App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services.Implementations;
 
 /// <summary>
 /// Application service for smoke tests.
@@ -37,7 +36,7 @@ internal sealed class SmokeTestApplicationService : ISmokeTestApplicationService
         // Convert to IQueryable and map each item
         // Note: This is in-memory IQueryable (tests already executed)
         return domainResult.Results
-            .Select(r => _mappingService.Map<App.Modules.Sys.Infrastructure.Domains.Diagnostics.Implementations.SmokeTestResult, SmokeTestResultDto>(r))
+            .Select(r => _mappingService.Map<SmokeTestResult, SmokeTestResultDto>(r))
             .AsQueryable();
     }
 

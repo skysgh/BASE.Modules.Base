@@ -3,6 +3,7 @@ using App.Modules.Sys.Domain.Domains.Workspaces.Models;
 using App.Modules.Sys.Domain.Domains.Workspaces.Repositories;
 using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
 using App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,14 +13,20 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations;
 /// EF Core implementation of workspace repository.
 /// Inherits cross-cutting concerns from GenericRepositoryBase.
 /// </summary>
-internal sealed class WorkspaceRepositoryEF : GenericRepositoryBase<Workspace>, IWorkspaceRepository
+internal sealed class WorkspaceRepository : GenericRepositoryBase<Workspace>, IWorkspaceRepository
 {
-    public WorkspaceRepositoryEF(
-        ModuleDbContext context,
-        IAppLogger<WorkspaceRepositoryEF> logger)
-        : base(context, logger) { }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="dbProvider"></param>
+    /// <param name="logger"></param>
+    public WorkspaceRepository(
+        IScopedDbContextProviderService dbProvider,
+        IAppLogger logger)
+        : base(dbProvider, logger) { }
 
     // Override when multi-tenancy/security model is finalized
+    /// <inheritdoc/>
     protected override IQueryable<Workspace> ApplySecurityFilters(IQueryable<Workspace> query)
     {
         // TODO: When workspace isolation model is finalized, add:
@@ -34,6 +41,7 @@ internal sealed class WorkspaceRepositoryEF : GenericRepositoryBase<Workspace>, 
         return base.ApplySecurityFilters(query);
     }
 
+    /// <inheritdoc/>
     public new async Task<Workspace?> GetByIdAsync(Guid workspaceId, CancellationToken cancellationToken = default)
     {
         return await Query() // ✅ Soft-delete filtered automatically
@@ -41,6 +49,7 @@ internal sealed class WorkspaceRepositoryEF : GenericRepositoryBase<Workspace>, 
             .FirstOrDefaultAsync(w => w.Id == workspaceId, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<List<Workspace>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await Query() // ✅ Soft-delete + security filters applied
@@ -51,6 +60,7 @@ internal sealed class WorkspaceRepositoryEF : GenericRepositoryBase<Workspace>, 
             .ToListAsync(cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task<Workspace?> GetDefaultWorkspaceAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         return await Query() // ✅ Soft-delete + security filters applied

@@ -1,4 +1,5 @@
 using App.Modules.Sys.Domain.Domains.Identity;
+using App.Modules.Sys.Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace App.Modules.Sys.Application.Domains.Identity.Services
     /// Application service for managing users.
     /// Orchestrates Domain + Infrastructure concerns.
     /// </summary>
-    public interface IUserManagementService
+    public interface IUserManagementService : IHasService
     {
         /// <summary>
         /// Create a new user.

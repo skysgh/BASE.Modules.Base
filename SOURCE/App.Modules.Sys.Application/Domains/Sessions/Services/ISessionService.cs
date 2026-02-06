@@ -1,4 +1,5 @@
 using App.Modules.Sys.Interfaces.Models.Session;
+using App.Modules.Sys.Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,8 +10,9 @@ namespace App.Modules.Sys.Application.Domains.Sessions.Services
     /// <summary>
     /// Service for managing user sessions.
     /// Handles session lifecycle and querying.
+    /// Singleton service (via IHasService) that internally manages scoped DbContext access.
     /// </summary>
-    public interface ISessionService
+    public interface ISessionService : IHasService
     {
         /// <summary>
         /// Get sessions with pagination and filtering.

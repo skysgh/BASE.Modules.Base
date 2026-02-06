@@ -6,11 +6,13 @@ using App.Modules.Sys.Domain.Domains.Identity;
 using App.Modules.Sys.Infrastructure.Domains.Constants;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations.Base;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Schema;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Schema.Management;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
 using App.Modules.Sys.Domain.Domains.Sessions.Models;
 using App.Modules.Sys.Domain.Domains.Workspaces.Models;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Schema.Implementations;
 using App.Modules.Sys.Domain.Domains.Permissions.Models;
+using App.Modules.Sys.Infrastructure.Data.EF.Configurations.ReferenceData;
 
 namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations
 {
@@ -122,6 +124,12 @@ namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbCon
             // BUT DONT FORGET IT (or you'll be adding to the 
             // BASE schema....making it harder to remove later.
             this.SchemaKey = ModuleConstants.DbSchemaKey;
+
+            modelBuilder.ApplyConfiguration(new SettingValueConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemPermissionConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemLanguageConfiguration());
+            modelBuilder.ApplyConfiguration(new SessionConfiguration());
+            modelBuilder.ApplyConfiguration(new SessionOperationConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

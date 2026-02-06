@@ -1,6 +1,9 @@
 using App.Modules.Sys.Domain.Domains.Permissions.Models;
 using App.Modules.Sys.Domain.Domains.Permissions.Respositories;
-using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
+using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
+using App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
+using App.Modules.Sys.Shared.Lifecycles;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,19 +14,20 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
 {
     /// <summary>
     /// EF Core implementation of ISystemPermissionRepository.
-    /// Lives in Infrastructure layer - knows about DbContext.
+    /// Inherits from GenericRepositoryBase for DbContext access and common repository operations.
+    /// Auto-registered via IHasScopedLifecycle marker interface.
     /// </summary>
-    public class SystemPermissionRepository : ISystemPermissionRepository
+    public class SystemPermissionRepository : RepositoryBase, 
+        ISystemPermissionRepository, IHasScopedLifecycle
     {
-        private readonly ModuleDbContext _context;
-
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="context"></param>
-        public SystemPermissionRepository(ModuleDbContext context)
+        /// <param name="dbProvider">Provider for scoped DbContext access</param>
+        /// <param name="logger">Logger instance</param>
+        public SystemPermissionRepository(IScopedDbContextProviderService dbProvider, IAppLogger logger)
+            : base(dbProvider, logger)
         {
-            _context = context;
         }
 
         /// <inheritdoc/>
@@ -31,7 +35,7 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
             string? category = null,
             CancellationToken ct = default)
         {
-            var query = _context.SystemPermissions.AsQueryable();
+            var query = Context.SystemPermissions.AsQueryable();
 
             if (!string.IsNullOrEmpty(category))
             {
@@ -44,29 +48,20 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
                 .ToListAsync(ct);
         }
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
+        /// <inheritdoc/>
         public async Task<SystemPermission?> GetByKeyAsync(
             string key,
             CancellationToken ct = default)
         {
-            return await _context.SystemPermissions
+            return await Context.SystemPermissions
                 .FirstOrDefaultAsync(p => p.Key == key, ct);
         }
 
-/// <summary>
-/// TODO
-/// </summary>
-/// <param name="ct"></param>
-/// <returns></returns>
+        /// <inheritdoc/>
         public async Task<IEnumerable<string>> GetCategoriesAsync(
             CancellationToken ct = default)
         {
-            return await _context.SystemPermissions
+            return await Context.SystemPermissions
                 .Select(p => p.Category)
                 .Distinct()
                 .OrderBy(c => c)
@@ -74,3 +69,4 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
         }
     }
 }
+

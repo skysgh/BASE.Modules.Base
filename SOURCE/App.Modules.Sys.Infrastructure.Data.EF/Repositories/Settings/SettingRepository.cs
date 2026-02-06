@@ -1,5 +1,9 @@
 using App.Modules.Sys.Domain.Settings;
 using App.Modules.Sys.Domain.Settings.Repositories;
+using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
+using App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
+using App.Modules.Sys.Shared.Lifecycles;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,14 +16,20 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories.Settings;
 /// <summary>
 /// EF Core implementation of hierarchical settings repository.
 /// Supports cascade resolution (System → Workspace → User).
+/// Inherits from GenericRepositoryBase for DbContext access and common repository operations.
+/// Auto-registered via IHasScopedLifecycle marker interface.
 /// </summary>
-internal sealed class SettingRepository : ISettingRepository
+internal sealed class SettingRepository : RepositoryBase, 
+ISettingRepository, IHasScopedLifecycle
 {
-    private readonly DbContext _context;
-
-    public SettingRepository(DbContext context)
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="dbProvider">Provider for scoped DbContext access</param>
+    /// <param name="logger">Logger instance</param>
+    public SettingRepository(IScopedDbContextProviderService dbProvider, IAppLogger logger)
+        : base(dbProvider, logger)
     {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     // ========================================
@@ -28,7 +38,7 @@ internal sealed class SettingRepository : ISettingRepository
 
     public async Task<IReadOnlyDictionary<string, Setting>> GetSystemSettingsAsync(CancellationToken ct = default)
     {
-        var settings = await _context.Set<Setting>()
+        var settings = await Context.Set<Setting>()
             .AsNoTracking()
             .Where(s => s.Scope == SettingScope.System)
             .ToListAsync(ct);
@@ -38,14 +48,14 @@ internal sealed class SettingRepository : ISettingRepository
 
     public async Task<Setting?> GetSystemSettingAsync(string key, CancellationToken ct = default)
     {
-        return await _context.Set<Setting>()
+        return await Context.Set<Setting>()
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.System && s.Key == key, ct);
     }
 
     public async Task UpsertSystemSettingAsync(string key, string value, string? valueType = null, bool isLocked = false, CancellationToken ct = default)
     {
-        var existing = await _context.Set<Setting>()
+        var existing = await Context.Set<Setting>()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.System && s.Key == key, ct);
 
         if (existing != null)
@@ -57,7 +67,7 @@ internal sealed class SettingRepository : ISettingRepository
         }
         else
         {
-            _context.Set<Setting>().Add(new Setting
+            Context.Set<Setting>().Add(new Setting
             {
                 Id = Guid.NewGuid(),
                 Key = key,
@@ -69,7 +79,7 @@ internal sealed class SettingRepository : ISettingRepository
             });
         }
 
-        await _context.SaveChangesAsync(ct);
+        await Context.SaveChangesAsync(ct);
     }
 
     // ========================================
@@ -78,7 +88,7 @@ internal sealed class SettingRepository : ISettingRepository
 
     public async Task<IReadOnlyDictionary<string, Setting>> GetWorkspaceSettingsAsync(Guid workspaceId, CancellationToken ct = default)
     {
-        var settings = await _context.Set<Setting>()
+        var settings = await Context.Set<Setting>()
             .AsNoTracking()
             .Where(s => s.Scope == SettingScope.Workspace && s.WorkspaceId == workspaceId)
             .ToListAsync(ct);
@@ -88,14 +98,14 @@ internal sealed class SettingRepository : ISettingRepository
 
     public async Task<Setting?> GetWorkspaceSettingAsync(Guid workspaceId, string key, CancellationToken ct = default)
     {
-        return await _context.Set<Setting>()
+        return await Context.Set<Setting>()
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.Workspace && s.WorkspaceId == workspaceId && s.Key == key, ct);
     }
 
     public async Task UpsertWorkspaceSettingAsync(Guid workspaceId, string key, string value, string? valueType = null, bool isLocked = false, CancellationToken ct = default)
     {
-        var existing = await _context.Set<Setting>()
+        var existing = await Context.Set<Setting>()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.Workspace && s.WorkspaceId == workspaceId && s.Key == key, ct);
 
         if (existing != null)
@@ -107,7 +117,7 @@ internal sealed class SettingRepository : ISettingRepository
         }
         else
         {
-            _context.Set<Setting>().Add(new Setting
+            Context.Set<Setting>().Add(new Setting
             {
                 Id = Guid.NewGuid(),
                 Key = key,
@@ -120,18 +130,18 @@ internal sealed class SettingRepository : ISettingRepository
             });
         }
 
-        await _context.SaveChangesAsync(ct);
+        await Context.SaveChangesAsync(ct);
     }
 
     public async Task DeleteWorkspaceSettingAsync(Guid workspaceId, string key, CancellationToken ct = default)
     {
-        var setting = await _context.Set<Setting>()
+        var setting = await Context.Set<Setting>()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.Workspace && s.WorkspaceId == workspaceId && s.Key == key, ct);
 
         if (setting != null)
         {
-            _context.Set<Setting>().Remove(setting);
-            await _context.SaveChangesAsync(ct);
+            Context.Set<Setting>().Remove(setting);
+            await Context.SaveChangesAsync(ct);
         }
     }
 
@@ -141,7 +151,7 @@ internal sealed class SettingRepository : ISettingRepository
 
     public async Task<IReadOnlyDictionary<string, Setting>> GetUserSettingsAsync(Guid workspaceId, Guid userId, CancellationToken ct = default)
     {
-        var settings = await _context.Set<Setting>()
+        var settings = await Context.Set<Setting>()
             .AsNoTracking()
             .Where(s => s.Scope == SettingScope.User && s.WorkspaceId == workspaceId && s.UserId == userId)
             .ToListAsync(ct);
@@ -151,14 +161,14 @@ internal sealed class SettingRepository : ISettingRepository
 
     public async Task<Setting?> GetUserSettingAsync(Guid workspaceId, Guid userId, string key, CancellationToken ct = default)
     {
-        return await _context.Set<Setting>()
+        return await Context.Set<Setting>()
             .AsNoTracking()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.User && s.WorkspaceId == workspaceId && s.UserId == userId && s.Key == key, ct);
     }
 
     public async Task UpsertUserSettingAsync(Guid workspaceId, Guid userId, string key, string value, string? valueType = null, CancellationToken ct = default)
     {
-        var existing = await _context.Set<Setting>()
+        var existing = await Context.Set<Setting>()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.User && s.WorkspaceId == workspaceId && s.UserId == userId && s.Key == key, ct);
 
         if (existing != null)
@@ -169,7 +179,7 @@ internal sealed class SettingRepository : ISettingRepository
         }
         else
         {
-            _context.Set<Setting>().Add(new Setting
+            Context.Set<Setting>().Add(new Setting
             {
                 Id = Guid.NewGuid(),
                 Key = key,
@@ -182,18 +192,18 @@ internal sealed class SettingRepository : ISettingRepository
             });
         }
 
-        await _context.SaveChangesAsync(ct);
+        await Context.SaveChangesAsync(ct);
     }
 
     public async Task DeleteUserSettingAsync(Guid workspaceId, Guid userId, string key, CancellationToken ct = default)
     {
-        var setting = await _context.Set<Setting>()
+        var setting = await Context.Set<Setting>()
             .FirstOrDefaultAsync(s => s.Scope == SettingScope.User && s.WorkspaceId == workspaceId && s.UserId == userId && s.Key == key, ct);
 
         if (setting != null)
         {
-            _context.Set<Setting>().Remove(setting);
-            await _context.SaveChangesAsync(ct);
+            Context.Set<Setting>().Remove(setting);
+            await Context.SaveChangesAsync(ct);
         }
     }
 
@@ -208,7 +218,7 @@ internal sealed class SettingRepository : ISettingRepository
     )> GetCascadeSettingsAsync(Guid workspaceId, Guid userId, CancellationToken ct = default)
     {
         // Efficient: Single query fetches all three scopes
-        var allSettings = await _context.Set<Setting>()
+        var allSettings = await Context.Set<Setting>()
             .AsNoTracking()
             .Where(s =>
                 s.Scope == SettingScope.System ||

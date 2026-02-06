@@ -14,12 +14,24 @@ namespace App
     public static class AssemblyDiscoveryExtensions
     {
         /// <summary>
+        /// Assembly prefix for all our application assemblies.
+        /// Value: "App."
+        /// </summary>
+        private const string AssemblyPrefix = "App.";
+        
+        /// <summary>
+        /// File search pattern for application assemblies.
+        /// Value: "App.*.dll"
+        /// </summary>
+        private const string AssemblyFilePattern = AssemblyPrefix + "*.dll";
+        
+        /// <summary>
         /// Force-load all module assemblies from disk into AppDomain.
         /// MUST be called BEFORE reflection-based discovery.
         /// </summary>
         /// <remarks>
         /// Problem: AppDomain.GetAssemblies() only returns LOADED assemblies.
-        /// Solution: Pre-load all App.Modules.*.dll files from bin directory.
+        /// Solution: Pre-load all App.*.dll files from bin directory.
         /// 
         /// This enables:
         /// - Development: Loads from bin/
@@ -49,7 +61,7 @@ namespace App
         }
         
         /// <summary>
-        /// Load all App.Modules.*.dll and App.Host*.dll files from a directory.
+        /// Load all App.*.dll files from a directory.
         /// </summary>
         private static void LoadModuleAssembliesFrom(string path, HashSet<string?> loadedNames)
         {
@@ -58,32 +70,27 @@ namespace App
                 return;
             }
             
-            var patterns = new[] { "App.Modules.*.dll", "App.Host*.dll", "App.Service*.dll" };
+            var dlls = Directory.GetFiles(path, AssemblyFilePattern, SearchOption.TopDirectoryOnly);
             
-            foreach (var pattern in patterns)
+            foreach (var dll in dlls)
             {
-                var dlls = Directory.GetFiles(path, pattern, SearchOption.TopDirectoryOnly);
-                
-                foreach (var dll in dlls)
+                try
                 {
-                    try
+                    var assemblyName = AssemblyName.GetAssemblyName(dll);
+                    
+                    // Skip if already loaded
+                    if (loadedNames.Contains(assemblyName.Name!))
                     {
-                        var assemblyName = AssemblyName.GetAssemblyName(dll);
-                        
-                        // Skip if already loaded
-                        if (loadedNames.Contains(assemblyName.Name!))
-                        {
-                            continue;
-                        }
-                        
-                        // Load into AppDomain
-                        Assembly.LoadFrom(dll);
-                        loadedNames.Add(assemblyName.Name!);
+                        continue;
                     }
-                    catch
-                    {
-                        // Ignore load failures (wrong architecture, dependencies missing, etc.)
-                    }
+                    
+                    // Load into AppDomain
+                    Assembly.LoadFrom(dll);
+                    loadedNames.Add(assemblyName.Name!);
+                }
+                catch
+                {
+                    // Ignore load failures (wrong architecture, dependencies missing, etc.)
                 }
             }
         }
@@ -161,9 +168,9 @@ namespace App
         {
             var name = assembly.GetName().Name;
             
-            return name?.StartsWith("App.Modules.", StringComparison.OrdinalIgnoreCase) == true ||
-                   name?.StartsWith("App.Host", StringComparison.OrdinalIgnoreCase) == true ||
-                   name?.StartsWith("App.Service", StringComparison.OrdinalIgnoreCase) == true;
+            // Simple check: starts with "App."
+            // This catches: App.Modules.*, App.Host*, App.Service.*, etc.
+            return name?.StartsWith(AssemblyPrefix, StringComparison.OrdinalIgnoreCase) == true;
         }
 
         /// <summary>

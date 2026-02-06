@@ -1,5 +1,9 @@
 using App.Modules.Sys.Domain.ReferenceData;
 using App.Modules.Sys.Domain.ReferenceData.Repositories;
+using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
+using App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
+using App.Modules.Sys.Shared.Lifecycles;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,20 +15,26 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Repositories.ReferenceData;
 
 /// <summary>
 /// EF Core implementation of SystemLanguage repository.
+/// Inherits from GenericRepositoryBase for DbContext access and common repository operations.
+/// Auto-registered via IHasScopedLifecycle marker interface.
 /// </summary>
-internal sealed class SystemLanguageRepository : ISystemLanguageRepository
+internal sealed class SystemLanguageRepository : RepositoryBase, 
+ISystemLanguageRepository, IHasScopedLifecycle
 {
-    private readonly DbContext _context;
-
-    public SystemLanguageRepository(DbContext context)
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="dbProvider">Provider for scoped DbContext access</param>
+    /// <param name="logger">Logger instance</param>
+    public SystemLanguageRepository(IScopedDbContextProviderService dbProvider, IAppLogger logger)
+        : base(dbProvider, logger)
     {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
     /// <inheritdoc/>
     public async Task<IReadOnlyList<SystemLanguage>> GetAllAsync(bool activeOnly = false, CancellationToken ct = default)
     {
-        var query = _context.Set<SystemLanguage>().AsNoTracking();
+        var query = Context.Set<SystemLanguage>().AsNoTracking();
 
         if (activeOnly)
         {
@@ -45,7 +55,7 @@ internal sealed class SystemLanguageRepository : ISystemLanguageRepository
             return null;
         }
 
-        return await _context.Set<SystemLanguage>()
+        return await Context.Set<SystemLanguage>()
             .AsNoTracking()
             .FirstOrDefaultAsync(l => l.Code.Equals(code, StringComparison.OrdinalIgnoreCase), ct);
     }
@@ -53,7 +63,7 @@ internal sealed class SystemLanguageRepository : ISystemLanguageRepository
     /// <inheritdoc/>
     public async Task<SystemLanguage> GetDefaultAsync(CancellationToken ct = default)
     {
-        var defaultLang = await _context.Set<SystemLanguage>()
+        var defaultLang = await Context.Set<SystemLanguage>()
             .AsNoTracking()
             .FirstOrDefaultAsync(l => l.IsDefault, ct);
 
@@ -73,8 +83,9 @@ internal sealed class SystemLanguageRepository : ISystemLanguageRepository
             return false;
         }
 
-        return await _context.Set<SystemLanguage>()
+        return await Context.Set<SystemLanguage>()
             .AsNoTracking()
             .AnyAsync(l => l.Code.Equals(code, StringComparison.OrdinalIgnoreCase), ct);
     }
 }
+

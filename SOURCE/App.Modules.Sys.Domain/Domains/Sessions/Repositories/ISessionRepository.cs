@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using App.Modules.Sys.Domain.Domains.Sessions.Models;
+using App.Modules.Sys.Shared.Lifecycles;
 
 namespace App.Modules.Sys.Domain.Domains.Sessions.Repositories
 {
@@ -10,7 +11,7 @@ namespace App.Modules.Sys.Domain.Domains.Sessions.Repositories
     /// Repository interface for Session aggregate.
     /// Application layer depends on this interface, not implementation.
     /// </summary>
-    public interface ISessionRepository
+    public interface ISessionRepository: IHasSingletonLifecycle
     {
         /// <summary>
         /// Get sessions with filtering and pagination.

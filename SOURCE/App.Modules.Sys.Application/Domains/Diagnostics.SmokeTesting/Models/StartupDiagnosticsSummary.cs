@@ -1,4 +1,4 @@
-namespace App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services
+namespace App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Models
 {
     /// <summary>
     /// Summary statistics for startup diagnostics.

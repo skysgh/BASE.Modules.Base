@@ -1,5 +1,6 @@
 using App.Modules.Sys.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Modules.Sys.Infrastructure.Web.Services.Implementations
 {
@@ -111,5 +112,16 @@ namespace App.Modules.Sys.Infrastructure.Web.Services.Implementations
             return value is T typedValue ? typedValue : default;
         }
 
+        /// <inheritdoc/>
+        public TService GetService<TService>() where TService : class
+        {
+            var context = _httpContextAccessor.HttpContext;
+            if (context == null)
+            {
+                throw new InvalidOperationException("HttpContext is not available. Ensure this is called within an HTTP request.");
+            }
+            
+            return context.RequestServices.GetRequiredService<TService>();
+        }
     }
 }

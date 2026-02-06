@@ -5,19 +5,19 @@ using App.Modules.Sys.Interfaces.Domains.V1.Implementations.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Modules.Sys.Interfaces.Domains.V1.Context;
+namespace App.Modules.Sys.Interfaces.Domains.V1.Contexts;
 
 /// <summary>
-/// Context API - Provides complete application context for frontend rendering.
+/// Contexts API - Provides complete application context for frontend rendering.
 /// Returns system, workspace, user, and computed settings in a single call.
 /// </summary>
 /// <remarks>
 /// This endpoint replaces multiple frontend API calls with a single aggregated response.
 /// Supports both authenticated and anonymous users.
 /// </remarks>
-[Route(ApiRoutes.Rest.V1.ControllerRoute)]
+[Route("api/rest/sys/v1/contexts")]
 [AllowAnonymous] // Allow anonymous access - returns limited context for anonymous users
-public class ContextController : SysApiControllerBase
+public class ContextsController : SysApiControllerBase
 {
     private readonly IApplicationContextService _contextService;
 
@@ -43,7 +43,7 @@ public class ContextController : SysApiControllerBase
     /// </remarks>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <response code="200">Context retrieved successfully.</response>
-    [HttpGet("context")]
+    [HttpGet]
     [ProducesResponseType(typeof(ApplicationContextDto), 200)]
     public async Task<ActionResult<ApplicationContextDto>> GetContext(CancellationToken cancellationToken = default)
     {

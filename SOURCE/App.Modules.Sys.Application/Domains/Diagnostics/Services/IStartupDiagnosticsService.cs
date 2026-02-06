@@ -2,7 +2,7 @@ using App.Modules.Sys.Application.Domains.Diagnostics.Models;
 using App.Modules.Sys.Shared.Models.Implementations;
 using App.Modules.Sys.Shared.Services;
 
-namespace App.Modules.Sys.Application.Domains.Diagnostics.SmokeTesting.Services
+namespace App.Modules.Sys.Application.Domains.Diagnostics.Services
 {
 
     /// <summary>

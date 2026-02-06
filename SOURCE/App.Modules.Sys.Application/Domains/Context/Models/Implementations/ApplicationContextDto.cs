@@ -22,6 +22,16 @@ public record ApplicationContextDto
     public UserContextDto? User { get; init; }
 
     /// <summary>
+    /// Current session information.
+    /// </summary>
+    public SessionContextDto Session { get; init; } = new();
+
+    /// <summary>
+    /// Navigation context (current location, breadcrumbs, menu structure).
+    /// </summary>
+    public NavigationContextDto Navigation { get; init; } = new();
+
+    /// <summary>
     /// Computed/merged settings (after hierarchy resolution).
     /// </summary>
     public ComputedSettingsDto Settings { get; init; } = new();

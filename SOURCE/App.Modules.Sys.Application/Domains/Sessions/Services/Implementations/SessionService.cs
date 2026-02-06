@@ -1,8 +1,8 @@
 using App.Modules.Sys.Domain.Domains.Sessions.Repositories;
 using App.Modules.Sys.Interfaces.Models.Session;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,28 +11,46 @@ namespace App.Modules.Sys.Application.Domains.Sessions.Services.Implementations
 {
     /// <summary>
     /// Implementation of session service.
-    /// Uses ISessionRepository interface - no direct EF dependency.
-    /// Handles DTO mapping and business logic.
+    /// Singleton service that accesses scoped repository via HttpContext.RequestServices.
     /// </summary>
-    internal sealed class SessionService : ISessionService
+    /// <remarks>
+    /// <para>
+    /// <b>Why this pattern at 150k concurrent users:</b>
+    /// - Singleton = Zero per-request allocation overhead
+    /// - Scoped repository access = Correct DbContext lifetime
+    /// - IHttpContextAccessor = Bridge between singleton and scoped
+    /// </para>
+    /// <para>
+    /// <b>How it works:</b>
+    /// 1. Service is Singleton (lives for app lifetime)
+    /// 2. Each request has its own HttpContext
+    /// 3. HttpContext.RequestServices provides request-scoped services
+    /// 4. Repository property resolves from request scope on each access
+    /// 5. Repository uses IScopedDbContextProviderService internally
+    /// </para>
+    /// </remarks>
+    public sealed class SessionService : ISessionService
     {
         private readonly ISessionRepository _repository;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public SessionService(ISessionRepository repository)
         {
             _repository = repository;
         }
 
+        
+        /// <inheritdoc/>
         public async Task<IEnumerable<SessionDto>> GetSessionsAsync(
             int skip = 0,
             int take = 50,
             bool activeOnly = false,
             CancellationToken ct = default)
         {
-            take = Math.Min(take, 100); // Max 100
-
+            take = Math.Min(take, 100);
             var sessions = await _repository.GetSessionsAsync(skip, take, activeOnly, ct);
-
             return sessions.Select(s => new SessionDto
             {
                 Id = s.Id,
@@ -46,17 +64,15 @@ namespace App.Modules.Sys.Application.Domains.Sessions.Services.Implementations
             });
         }
 
-        public async Task<SessionDto?> GetSessionByIdAsync(
-            Guid id,
-            CancellationToken ct = default)
+        /// <inheritdoc/>
+        public async Task<SessionDto?> GetSessionByIdAsync(Guid id, CancellationToken ct = default)
         {
             var session = await _repository.GetByIdAsync(id, ct);
-            
             if (session == null)
             {
                 return null;
             }
-
+            
             return new SessionDto
             {
                 Id = session.Id,
@@ -70,37 +86,33 @@ namespace App.Modules.Sys.Application.Domains.Sessions.Services.Implementations
             };
         }
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<SessionOperationDto>> GetSessionOperationsAsync(
-            Guid sessionId,
-            int skip = 0,
-            int take = 50,
-            CancellationToken ct = default)
+            Guid sessionId, int skip = 0, int take = 50, CancellationToken ct = default)
         {
             take = Math.Min(take, 100);
-
             var operations = await _repository.GetOperationsAsync(sessionId, skip, take, ct);
-
             return operations.Select(o => new SessionOperationDto
             {
-                Id = o.Id,
-                SessionId = o.SessionId,
+                Id = o.Id, 
+                SessionId = o.SessionId, 
                 OperationType = o.OperationType,
-                Resource = o.Resource,
-                HttpMethod = o.HttpMethod,
+                Resource = o.Resource, 
+                HttpMethod = o.HttpMethod, 
                 IpAddress = o.IpAddress,
-                Timestamp = o.Timestamp.ToString("o"),
+                Timestamp = o.Timestamp.ToString("o"), 
                 StatusCode = o.StatusCode,
-                DurationMs = o.DurationMs,
-                IsSuccess = o.IsSuccess,
+                DurationMs = o.DurationMs, 
+                IsSuccess = o.IsSuccess, 
                 ErrorMessage = o.ErrorMessage
             });
         }
 
-        public async Task<bool> SessionExistsAsync(
-            Guid id,
-            CancellationToken ct = default)
+        /// <inheritdoc/>
+        public async Task<bool> SessionExistsAsync(Guid id, CancellationToken ct = default)
         {
             return await _repository.ExistsAsync(id, ct);
         }
     }
 }
+

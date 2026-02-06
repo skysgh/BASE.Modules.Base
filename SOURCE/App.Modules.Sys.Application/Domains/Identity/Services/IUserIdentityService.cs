@@ -1,4 +1,5 @@
 using App.Modules.Sys.Domain.Domains.Identity;
+using App.Modules.Sys.Shared.Services;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -10,7 +11,7 @@ namespace App.Modules.Sys.Application.Domains.Identity.Services
     /// Application service for multi-provider authentication.
     /// Links users to external identity providers (Google, Microsoft, etc.)
     /// </summary>
-    public interface IUserIdentityService
+    public interface IUserIdentityService : IHasService 
     {
         /// <summary>
         /// Link authentication provider to user.

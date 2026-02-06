@@ -10,7 +10,7 @@ namespace App.Modules.Sys.Shared.Services
     /// services must implement to be discoverable
     /// at startup via reflection.
     /// </summary>
-    public interface IHasService :IHasSingletonLifecycle
+    public interface IHasService : IHasSingletonLifecycle
     {
     }
 }

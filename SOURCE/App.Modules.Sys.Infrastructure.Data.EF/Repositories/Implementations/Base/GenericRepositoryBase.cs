@@ -1,22 +1,33 @@
 using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
 using App.Modules.Sys.Shared.Models.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
 
 /// <summary>
-/// Generic repository base providing cross-cutting query concerns.
+/// Generic repository base providing cross-cutting query concerns and DbContext access.
 /// Enforces soft-delete filtering by default with extension points for future security rules.
 /// Returns IQueryable for composability (critical for OData and performance).
 /// </summary>
 /// <typeparam name="T">Entity type with Guid identifier.</typeparam>
+/// <remarks>
+/// <para>
+/// <b>DbContext Access Pattern:</b>
+/// - Repository is Scoped (created once per HTTP request)
+/// - Injects IScopedDbContextProviderService (also Scoped)
+/// - Use GetDbContext&lt;TDbContext&gt;() to resolve DbContext from request scope
+/// - Same DbContext instance throughout the entire request
+/// </para>
+/// </remarks>
 public abstract class GenericRepositoryBase<T> where T : class, IHasGuidId
 {
-    /// <summary>
-    /// Database context for data access.
-    /// </summary>
-    protected ModuleDbContext Context { get; }
+    private readonly IScopedDbContextProviderService _dbProvider;
     
     /// <summary>
     /// Logger for diagnostic information.
@@ -26,13 +37,33 @@ public abstract class GenericRepositoryBase<T> where T : class, IHasGuidId
     /// <summary>
     /// Initializes a new instance of the repository base.
     /// </summary>
-    /// <param name="context">Database context.</param>
+    /// <param name="dbProvider">Provider for scoped DbContext access.</param>
     /// <param name="logger">Logger instance.</param>
-    protected GenericRepositoryBase(ModuleDbContext context, IAppLogger logger)
+    protected GenericRepositoryBase(IScopedDbContextProviderService dbProvider, IAppLogger logger)
     {
-        Context = context;
+        _dbProvider = dbProvider;
         Logger = logger;
     }
+
+    /// <summary>
+    /// Get DbContext for the current request.
+    /// Returns the same DbContext instance throughout the request.
+    /// </summary>
+    /// <typeparam name="TDbContext">The DbContext type to retrieve</typeparam>
+    /// <returns>The scoped DbContext instance</returns>
+    /// <remarks>
+    /// This method resolves the DbContext from the request's service provider.
+    /// Since both this repository and the provider are Scoped, they share the same request lifetime.
+    /// </remarks>
+    protected TDbContext GetDbContext<TDbContext>() where TDbContext : DbContext
+    {
+        return _dbProvider.GetDbContext<TDbContext>();
+    }
+
+    /// <summary>
+    /// Convenience property - returns ModuleDbContext for this module.
+    /// </summary>
+    protected ModuleDbContext Context => GetDbContext<ModuleDbContext>();
 
     /// <summary>
     /// Returns base query with cross-cutting concerns applied.

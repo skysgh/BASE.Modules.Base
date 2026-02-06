@@ -1,6 +1,10 @@
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services.Implementations;
 using App.Modules.Sys.Initialisation;
 using App.Modules.Sys.Initialisation.Implementation.Base;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -12,7 +16,7 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Initialisation.Implementation
 {
     /// <summary>
     /// Assembly specific implementation of IModuleAssemblyInitialiser.
-    /// Discovers and registers DbContext save handlers from this assembly.
+    /// Registers DbContext, scoped provider, and discovers save handlers.
     /// </summary>
     public class ModuleAssemblyInitialiser : ModuleAssemblyInitialiserBase
     {
@@ -20,6 +24,26 @@ namespace App.Modules.Sys.Infrastructure.Data.EF.Initialisation.Implementation
         ///<inheritdoc/>
         public override void DoBeforeBuild(IServiceCollection services)
         {
+            // Register ModuleDbContext with SQL Server
+            services.AddDbContext<ModuleDbContext>((serviceProvider, options) =>
+            {
+                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("Default");
+                
+                if (string.IsNullOrEmpty(connectionString))
+                {
+                    throw new InvalidOperationException(
+                        "Connection string 'Default' not found in configuration. " +
+                        "Ensure ConnectionStrings:Default is defined in appsettings.json");
+                }
+                
+                options.UseSqlServer(connectionString);
+            });
+
+            // Register ScopedDbContextProviderService as SINGLETON
+            // This allows singleton repositories to inject it safely
+            // Provider uses HttpContextAccessor internally to resolve DbContext from request scope at runtime
+            services.AddSingleton<IScopedDbContextProviderService, ScopedDbContextProviderService>();
         }
 
         /// <inheritdoc/>

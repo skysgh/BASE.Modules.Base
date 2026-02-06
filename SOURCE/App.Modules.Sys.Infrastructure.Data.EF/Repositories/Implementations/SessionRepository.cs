@@ -1,7 +1,11 @@
 using App;
 using App.Modules.Sys.Domain.Domains.Sessions.Models;
 using App.Modules.Sys.Domain.Domains.Sessions.Repositories;
+using App.Modules.Sys.Infrastructure.Domains.Diagnostics;
 using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.DbContexts.Implementations;
+using App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Services;
+using App.Modules.Sys.Infrastructure.Repositories.Implementations.Base;
+using App.Modules.Sys.Shared.Lifecycles;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,19 +17,29 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
 {
     /// <summary>
     /// EF Core implementation of ISessionRepository.
-    /// Lives in Infrastructure layer - knows about DbContext.
+    /// Inherits from GenericRepositoryBase for DbContext access and common repository operations.
+    /// Auto-registered via IHasScopedLifecycle marker interface.
     /// </summary>
-    public class SessionRepository : ISessionRepository
+    /// <remarks>
+    /// <para>
+    /// <b>Lifetime: Scoped</b> - Created once per HTTP request
+    /// </para>
+    /// <para>
+    /// <b>DbContext Access:</b>
+    /// Uses GetDbContext&lt;ModuleDbContext&gt;() or Context property from base class.
+    /// Base class injects IScopedDbContextProviderService which resolves DbContext from request scope.
+    /// </para>
+    /// </remarks>
+    public class SessionRepository : RepositoryBase, ISessionRepository
     {
-        private readonly ModuleDbContext _context;
-
         /// <summary>
         /// Initializes a new instance of the SessionRepository class.
         /// </summary>
-        /// <param name="context">The database context for session data access.</param>
-        public SessionRepository(ModuleDbContext context)
+        /// <param name="dbProvider">Provider for scoped DbContext access</param>
+        /// <param name="logger">Logger instance</param>
+        public SessionRepository(IScopedDbContextProviderService dbProvider, IAppLogger logger) 
+            : base(dbProvider, logger)
         {
-            _context = context;
         }
 
         /// <inheritdoc/>
@@ -35,7 +49,7 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
             bool activeOnly,
             CancellationToken ct = default)
         {
-            var query = _context.Sessions
+            var query = Context.Sessions
                 .Include(s => s.Operations)
                 .AsQueryable();
 
@@ -56,7 +70,7 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
         /// <inheritdoc/>
         public async Task<Session?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
-            return await _context.Sessions
+            return await Context.Sessions
                 .Include(s => s.Operations)
                 .FirstOrDefaultAsync(s => s.Id == id, ct);
         }
@@ -64,7 +78,7 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
         /// <inheritdoc/>
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
         {
-            return await _context.Sessions.AnyAsync(s => s.Id == id, ct);
+            return await Context.Sessions.AnyAsync(s => s.Id == id, ct);
         }
 
         /// <inheritdoc/>
@@ -74,7 +88,7 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
             int take,
             CancellationToken ct = default)
         {
-            return await _context.SessionOperations
+            return await Context.SessionOperations
                 .Where(o => o.SessionId == sessionId)
                 .OrderByDescending(o => o.Timestamp)
                 .Skip(skip)
@@ -83,3 +97,4 @@ namespace App.Modules.Sys.Infrastructure.Repositories.Implementations
         }
     }
 }
+

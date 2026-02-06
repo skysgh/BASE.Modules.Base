@@ -6,8 +6,9 @@ namespace App.Modules.Sys.Infrastructure.Domains.Diagnostics
     /// <summary>
     /// Application-specific logger abstraction.
     /// Wraps the underlying logging framework to avoid direct dependencies.
+    /// Registered as Singleton via IHasSingletonLifecycle.
     /// </summary>
-    public interface IAppLogger
+    public interface IAppLogger : IHasSingletonLifecycle
     {
         /// <summary>
         /// Logs a trace message for detailed debugging information.

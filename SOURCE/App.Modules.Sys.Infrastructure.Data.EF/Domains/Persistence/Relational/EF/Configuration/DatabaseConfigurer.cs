@@ -36,11 +36,11 @@ namespace App.Modules.Sys.Infrastructure.Domains.Persistence.Relational.EF.Confi
                     "IConfiguration not available in service provider. Cannot configure database.");
             }
 
-            var connectionString = configuration.GetConnectionString("SysModule");
+            var connectionString = configuration.GetConnectionString("Default");
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new InvalidOperationException(
-                    "Connection string 'SysModule' not found in IConfiguration. " +
+                    "Connection string 'Default' not found in IConfiguration. " +
                     "Ensure it's defined in appsettings.json under ConnectionStrings section.");
             }
 

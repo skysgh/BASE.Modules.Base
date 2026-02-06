@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using App.Modules.Sys.Shared.Services;
 
 namespace App.Modules.Sys.Application.Domains.Workspace.Services
 {
@@ -7,7 +8,7 @@ namespace App.Modules.Sys.Application.Domains.Workspace.Services
     /// Service for validating workspace IDs.
     /// Used by routing middleware to determine if a segment is a workspace.
     /// </summary>
-    public interface IWorkspaceValidationService
+    public interface IWorkspaceValidationService : IHasService
     {
         /// <summary>
         /// Check if workspace ID exists.

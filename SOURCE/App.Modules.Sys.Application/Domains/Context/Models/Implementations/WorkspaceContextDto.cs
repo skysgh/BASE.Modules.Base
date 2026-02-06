@@ -59,9 +59,24 @@ public record WorkspaceDetailsDto
     public string Name { get; init; } = string.Empty;
 
     /// <summary>
+    /// Workspace title (may differ from name).
+    /// </summary>
+    public string Title { get; init; } = string.Empty;
+
+    /// <summary>
+    /// Workspace description.
+    /// </summary>
+    public string Description { get; init; } = string.Empty;
+
+    /// <summary>
     /// Workspace-level branding (tenant customization).
     /// </summary>
     public WorkspaceBrandingDto Branding { get; init; } = new();
+
+    /// <summary>
+    /// Contact information for this workspace.
+    /// </summary>
+    public WorkspaceContactDto Contact { get; init; } = new();
 
     /// <summary>
     /// Account/subscription information.
@@ -69,9 +84,71 @@ public record WorkspaceDetailsDto
     public AccountInfoDto Account { get; init; } = new();
 
     /// <summary>
-    /// Workspace-level settings.
+    /// Resource paths (images, i18n, etc.).
     /// </summary>
-    public Dictionary<string, object> Settings { get; init; } = new();
+    public WorkspaceResourcesDto Resources { get; init; } = new();
+
+    /// <summary>
+    /// Account-level feature capabilities (what workspace has paid for).
+    /// </summary>
+    public Dictionary<string, bool> AccountFeatures { get; init; } = new();
+
+    /// <summary>
+    /// UI rendering options/preferences (what user wants to see).
+    /// </summary>
+    public Dictionary<string, object> UIOptions { get; init; } = new();
+}
+
+/// <summary>
+/// Workspace contact information.
+/// </summary>
+public record WorkspaceContactDto
+{
+    /// <summary>
+    /// Contact email address.
+    /// </summary>
+    public string? Email { get; init; }
+
+    /// <summary>
+    /// Contact phone number.
+    /// </summary>
+    public string? Phone { get; init; }
+
+    /// <summary>
+    /// Physical/postal address.
+    /// </summary>
+    public AddressDto? Address { get; init; }
+}
+
+/// <summary>
+/// Physical/postal address.
+/// </summary>
+public record AddressDto
+{
+    /// <summary>
+    /// Street address.
+    /// </summary>
+    public string? Street { get; init; }
+
+    /// <summary>
+    /// City/locality.
+    /// </summary>
+    public string? City { get; init; }
+
+    /// <summary>
+    /// State/region/province.
+    /// </summary>
+    public string? Region { get; init; }
+
+    /// <summary>
+    /// Postal/ZIP code.
+    /// </summary>
+    public string? PostalCode { get; init; }
+
+    /// <summary>
+    /// Country.
+    /// </summary>
+    public string? Country { get; init; }
 }
 
 /// <summary>
@@ -85,19 +162,77 @@ public record WorkspaceBrandingDto
     public string OrganizationName { get; init; } = string.Empty;
 
     /// <summary>
-    /// Logo URL.
+    /// Logo URL (default/light mode).
     /// </summary>
     public string? LogoUrl { get; init; }
 
+    /// <summary>
+    /// Logo URL for dark mode.
+    /// </summary>
+    public string? LogoDarkUrl { get; init; }
+
+    /// <summary>
+    /// Small logo URL (for compact UI).
+    /// </summary>
+    public string? LogoSmallUrl { get; init; }
+
+    /// <summary>
+    /// Theme colors and styling.
+    /// </summary>
+    public ThemeDto Theme { get; init; } = new();
+}
+
+/// <summary>
+/// Theme styling (colors, layout, density).
+/// </summary>
+public record ThemeDto
+{
     /// <summary>
     /// Primary brand color (hex).
     /// </summary>
     public string? PrimaryColor { get; init; }
 
     /// <summary>
-    /// Custom CSS URL.
+    /// Secondary brand color (hex).
+    /// </summary>
+    public string? SecondaryColor { get; init; }
+
+    /// <summary>
+    /// Accent color (hex).
+    /// </summary>
+    public string? AccentColor { get; init; }
+
+    /// <summary>
+    /// Custom CSS URL (advanced customization).
     /// </summary>
     public string? CustomCssUrl { get; init; }
+
+    // TODO: Add when designing theme entities:
+    // public string? LayoutMode { get; init; }  // sidebar-left, top-nav, etc.
+    // public string? Density { get; init; }  // comfortable, compact, spacious
+    // public string? CornerRadius { get; init; }  // sharp, rounded, pill
+    // public string? FontFamily { get; init; }
+}
+
+/// <summary>
+/// Workspace resource paths.
+/// </summary>
+public record WorkspaceResourcesDto
+{
+    /// <summary>
+    /// Images root path.
+    /// </summary>
+    public string? ImagesRoot { get; init; }
+
+    /// <summary>
+    /// "Trusted by" logos path.
+    /// </summary>
+    public string? TrustedByPath { get; init; }
+
+    /// <summary>
+    /// i18n translation files path.
+    /// </summary>
+    public string? I18nPath { get; init; }
 }
 
 /// <summary>

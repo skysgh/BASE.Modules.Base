@@ -1,5 +1,6 @@
 using App.Modules.Sys.Application.Domains.Context.Models.Implementations;
 using App.Modules.Sys.Shared.Lifecycles;
+using App.Modules.Sys.Shared.Services;
 
 namespace App.Modules.Sys.Application.Domains.Workspace.Services;
 
@@ -7,7 +8,7 @@ namespace App.Modules.Sys.Application.Domains.Workspace.Services;
 /// Service for workspace management and user workspace membership.
 /// Auto-registered via IHasScopedLifecycle.
 /// </summary>
-public interface IWorkspaceService : IHasScopedLifecycle
+public interface IWorkspaceService : IHasService
 {
     /// <summary>
     /// Gets all workspaces where the specified user is a member.
