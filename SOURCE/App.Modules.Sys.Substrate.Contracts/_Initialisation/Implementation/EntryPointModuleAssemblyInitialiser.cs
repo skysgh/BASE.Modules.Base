@@ -35,6 +35,11 @@ namespace App.Modules.Sys.Initialisation.Implementation
         {
             log.Log(TraceLevel.Info, "=== DISCOVERING MODULES ===");
             
+            // STEP 0: Pre-load all module assemblies from disk into AppDomain
+            // CRITICAL: Must be done BEFORE reflection scan
+            log.Log(TraceLevel.Debug, "Pre-loading module assemblies from disk...");
+            AssemblyDiscoveryExtensions.PreloadModuleAssembliesFromDisk();
+            
             // STEP 1: Discover all module assemblies recursively (extension method)
             var moduleAssemblies = entryPointAssembly.DiscoverModuleAssemblies();
             
@@ -141,9 +146,11 @@ namespace App.Modules.Sys.Initialisation.Implementation
         private static string? ExtractModuleName(Assembly assembly)
         {
             var name = assembly.GetName().Name;
-            
+
             if (name == null)
+            {
                 return null;
+            }
             
             // Pattern: App.Modules.{ModuleName}.{Layer}
             if (name.StartsWith("App.Modules.", StringComparison.OrdinalIgnoreCase))

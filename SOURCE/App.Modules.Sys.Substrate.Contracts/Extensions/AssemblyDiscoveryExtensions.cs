@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -13,6 +14,81 @@ namespace App
     public static class AssemblyDiscoveryExtensions
     {
         /// <summary>
+        /// Force-load all module assemblies from disk into AppDomain.
+        /// MUST be called BEFORE reflection-based discovery.
+        /// </summary>
+        /// <remarks>
+        /// Problem: AppDomain.GetAssemblies() only returns LOADED assemblies.
+        /// Solution: Pre-load all App.Modules.*.dll files from bin directory.
+        /// 
+        /// This enables:
+        /// - Development: Loads from bin/
+        /// - NuGet: Loads from bin/modules/
+        /// - Convention-based discovery
+        /// </remarks>
+        public static void PreloadModuleAssembliesFromDisk()
+        {
+            var binPath = AppDomain.CurrentDomain.BaseDirectory;
+            var loadedNames = AppDomain.CurrentDomain.GetAssemblies()
+                .Select(a => a.GetName().Name)
+                .Where(n => n != null)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase)!;
+            
+            // STRATEGY 1: Load from bin/ (development scenario)
+            LoadModuleAssembliesFrom(binPath, loadedNames);
+            
+            // STRATEGY 2: Load from bin/modules/ (packaged scenario)
+            var modulesPath = Path.Combine(binPath, "modules");
+            if (Directory.Exists(modulesPath))
+            {
+                foreach (var moduleDir in Directory.GetDirectories(modulesPath))
+                {
+                    LoadModuleAssembliesFrom(moduleDir, loadedNames);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Load all App.Modules.*.dll and App.Host*.dll files from a directory.
+        /// </summary>
+        private static void LoadModuleAssembliesFrom(string path, HashSet<string?> loadedNames)
+        {
+            if (!Directory.Exists(path))
+            {
+                return;
+            }
+            
+            var patterns = new[] { "App.Modules.*.dll", "App.Host*.dll", "App.Service*.dll" };
+            
+            foreach (var pattern in patterns)
+            {
+                var dlls = Directory.GetFiles(path, pattern, SearchOption.TopDirectoryOnly);
+                
+                foreach (var dll in dlls)
+                {
+                    try
+                    {
+                        var assemblyName = AssemblyName.GetAssemblyName(dll);
+                        
+                        // Skip if already loaded
+                        if (loadedNames.Contains(assemblyName.Name!))
+                        {
+                            continue;
+                        }
+                        
+                        // Load into AppDomain
+                        Assembly.LoadFrom(dll);
+                        loadedNames.Add(assemblyName.Name!);
+                    }
+                    catch
+                    {
+                        // Ignore load failures (wrong architecture, dependencies missing, etc.)
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
         /// Discovers all module assemblies starting from entry point.
         /// Uses TWO strategies:
         /// 1. BFS through referenced assemblies
@@ -20,6 +96,10 @@ namespace App
         /// </summary>
         /// <param name="entryPoint">Starting assembly (typically App.Host)</param>
         /// <returns>Set of all discovered module assemblies</returns>
+        /// <remarks>
+        /// IMPORTANT: Call PreloadModuleAssembliesFromDisk() FIRST!
+        /// Otherwise Strategy 2 won't find unloaded assemblies.
+        /// </remarks>
         public static HashSet<Assembly> DiscoverModuleAssemblies(this Assembly entryPoint)
         {
             var moduleAssemblies = new HashSet<Assembly>();
